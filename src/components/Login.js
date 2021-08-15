@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const Login = ({ getToken, loginError, setLoginError }) => {
+const Login = ({ login, loginError, setLoginError }) => {
   const [email, setEmail] = useState('admin@mondorobot.com')
   const [password, setPassword] = useState('R0bot4Lif3')
 
@@ -10,7 +10,7 @@ const Login = ({ getToken, loginError, setLoginError }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    getToken(false, { email, password })
+    login({ email, password })
   }
 
   return (

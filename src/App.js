@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Login from './components/Login'
 import Register from './components/Register'
+import Robots from './components/Robots'
 
 const url = 'https://mondo-robot-art-api.herokuapp.com'
 
@@ -10,9 +11,7 @@ function App() {
   const [auth, setAuth] = useState(null)
   const [loginError, setLoginError] = useState('')
   const [registerError, setRegisterError] = useState('')
-
-  console.log('bearerToken :>> ', bearerToken)
-  console.log('auth :>> ', auth)
+  const [robots, setRobots] = useState([])
 
   const headers = (token) => ({
     headers: {
@@ -67,6 +66,25 @@ function App() {
       })
   }
 
+  const getRobots = async () => {
+    const robots = await axios.get(`${url}/robots`, headers(bearerToken))
+    setRobots(robots.data)
+  }
+
+  // robot object should contain a name (string) and an image (string)
+  const addRobot = async (robot) => {
+    await axios
+      .post(`${url}/robots`, robot, headers(bearerToken))
+      .then((response) => alert('Robot Added'))
+      .catch((error) => alert(error.response.statusText))
+  }
+
+  useEffect(() => {
+    if (auth) {
+      getRobots()
+    }
+  }, [auth])
+
   if (!auth) {
     return (
       <div>
@@ -81,6 +99,7 @@ function App() {
     return (
       <div>
         <h1>Welcome {auth.name}</h1>
+        <Robots robots={robots} />
       </div>
     )
   }
