@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-ro
 import Login from './components/Login'
 import Register from './components/Register'
 import Robots from './components/Robots'
+import Results from './components/Results'
 
 const url = 'https://mondo-robot-art-api.herokuapp.com'
 
@@ -15,8 +16,11 @@ function App() {
   const [loginError, setLoginError] = useState('')
   const [registerError, setRegisterError] = useState('')
   const [robots, setRobots] = useState([])
+  const [votes, setVotes] = useState([])
+  const [currentVote, setCurrentVote] = useState('')
 
-  console.log('bearerToken :>> ', bearerToken)
+  console.log('votes :>> ', votes)
+  console.log('currentVote :>> ', currentVote)
 
   const headers = (token) => ({
     headers: {
@@ -94,9 +98,35 @@ function App() {
       .catch((error) => alert(error.response.statusText))
   }
 
+  const getVotes = async () => {
+    const votes = await axios.get(`${url}/votes`, headers(bearerToken))
+    setVotes(votes.data)
+  }
+
+  // robot is an object with a robot id ... { robot: aasdfg... }
+  const addVote = async (robot) => {
+    await axios
+      .post(`${url}/votes`, robot, headers(bearerToken))
+      .then((response) => {
+        const id = response.data.id
+        if (currentVote) {
+          removeVote(currentVote)
+        }
+        setCurrentVote(id)
+        getVotes()
+        alert('Vote Added')
+      })
+      .catch((error) => alert(error.response.statusText))
+  }
+
+  const removeVote = async (id) => {
+    await axios.delete(`${url}/votes/${id}`, headers(bearerToken)).then((response) => getVotes())
+  }
+
   useEffect(() => {
     if (loggedIn) {
       getRobots()
+      getVotes()
     }
   }, [loggedIn])
 
@@ -105,6 +135,7 @@ function App() {
       <Link to="/robots">Robots</Link>
       <Link to="/results">Results</Link>
       <button onClick={logout}>Logout</button>
+      {/* <button onClick={() => removeVote(votes[0].id)}>remove vote</button> */}
     </div>
   )
 
@@ -128,7 +159,16 @@ function App() {
           <Route exact path="/robots">
             {loggedIn ? (
               <Nav>
-                <Robots robots={robots} />
+                <Robots robots={robots} addVote={addVote} removeVote={removeVote} />
+              </Nav>
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Route>
+          <Route exact path="/results">
+            {loggedIn ? (
+              <Nav>
+                <Results robots={robots} votes={votes} />
               </Nav>
             ) : (
               <Redirect to="/" />
