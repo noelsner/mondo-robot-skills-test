@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom'
+
 import Login from './components/Login'
 import Register from './components/Register'
 import Robots from './components/Robots'
@@ -8,10 +10,13 @@ const url = 'https://mondo-robot-art-api.herokuapp.com'
 
 function App() {
   const [bearerToken, setBearerToken] = useState('')
-  const [auth, setAuth] = useState(null)
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [user, setUser] = useState(null)
   const [loginError, setLoginError] = useState('')
   const [registerError, setRegisterError] = useState('')
   const [robots, setRobots] = useState([])
+
+  console.log('bearerToken :>> ', bearerToken)
 
   const headers = (token) => ({
     headers: {
@@ -45,7 +50,8 @@ function App() {
 
   const exchangeTokenForAuth = async (token) => {
     const response = await axios.get(`${url}/auth/session`, headers(token))
-    setAuth(response.data)
+    setUser(response.data)
+    setLoggedIn(true)
   }
 
   const register = async (credentials) => {
@@ -66,6 +72,15 @@ function App() {
       })
   }
 
+  const logout = async () => {
+    await axios.delete(`${url}/auth/session`, headers(bearerToken)).then(() => {
+      setBearerToken('')
+      setLoggedIn(false)
+      setUser(null)
+      return <Redirect to="/login" />
+    })
+  }
+
   const getRobots = async () => {
     const robots = await axios.get(`${url}/robots`, headers(bearerToken))
     setRobots(robots.data)
@@ -80,29 +95,49 @@ function App() {
   }
 
   useEffect(() => {
-    if (auth) {
+    if (loggedIn) {
       getRobots()
     }
-  }, [auth])
+  }, [loggedIn])
 
-  if (!auth) {
-    return (
+  const NavBar = () => (
+    <div>
+      <Link to="/robots">Robots</Link>
+      <Link to="/results">Results</Link>
+      <button onClick={logout}>Logout</button>
+    </div>
+  )
+
+  const Nav = ({ children }) => (
+    <div>
+      <NavBar />
+      {children}
+    </div>
+  )
+
+  return (
+    <Router>
       <div>
-        <h1>Login</h1>
-        <Login login={login} loginError={loginError} setLoginError={setLoginError} />
-        <hr />
-        <h1>Register</h1>
-        <Register register={register} registerError={registerError} setRegisterError={setRegisterError} />
+        <Switch>
+          <Route exact path="/">
+            {loggedIn ? <Redirect to="/robots" /> : <Login login={login} loginError={loginError} setLoginError={setLoginError} />}
+          </Route>
+          <Route exact path="/register">
+            <Register register={register} registerError={registerError} setRegisterError={setRegisterError} />
+          </Route>
+          <Route exact path="/robots">
+            {loggedIn ? (
+              <Nav>
+                <Robots robots={robots} />
+              </Nav>
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Route>
+        </Switch>
       </div>
-    )
-  } else {
-    return (
-      <div>
-        <h1>Welcome {auth.name}</h1>
-        <Robots robots={robots} />
-      </div>
-    )
-  }
+    </Router>
+  )
 }
 
 export default App
