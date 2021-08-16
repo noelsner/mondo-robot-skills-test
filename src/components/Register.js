@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Register = ({ register, registerError, setRegisterError }) => {
   const [name, setName] = useState('')
@@ -11,7 +12,7 @@ const Register = ({ register, registerError, setRegisterError }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    register({ name, email, password })
+    register(name, email, password)
   }
 
   return (
@@ -39,6 +40,7 @@ const Register = ({ register, registerError, setRegisterError }) => {
         <button type="submit">Submit</button>
         {registerError && <p>{registerError}</p>}
       </form>
+      <Link to="/">Back to Login</Link>
     </div>
   )
 }
