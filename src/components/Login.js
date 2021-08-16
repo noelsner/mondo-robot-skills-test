@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
-const Login = ({ login, loginError, setLoginError }) => {
+const Login = ({ logIn, loginError, setLoginError }) => {
   const [email, setEmail] = useState('admin@mondorobot.com')
   const [password, setPassword] = useState('R0bot4Lif3')
 
@@ -10,7 +11,7 @@ const Login = ({ login, loginError, setLoginError }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    login({ email, password })
+    logIn(email, password)
   }
 
   return (
@@ -34,6 +35,7 @@ const Login = ({ login, loginError, setLoginError }) => {
         <button type="submit">Submit</button>
         {loginError && <p>{loginError}</p>}
       </form>
+      <Link to="/register">Register</Link>
     </div>
   )
 }
