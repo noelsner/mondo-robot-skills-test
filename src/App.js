@@ -7,6 +7,7 @@ import Register from './components/Register'
 import Robots from './components/Robots'
 import Results from './components/Results'
 import Nav from './components/Nav'
+import Admin from './components/Admin'
 
 const url = 'https://mondo-robot-art-api.herokuapp.com'
 
@@ -18,10 +19,19 @@ function App() {
   const [registerError, setRegisterError] = useState('')
   const [robots, setRobots] = useState([])
   const [votes, setVotes] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const headers = (token) => ({
     headers: {
       'Content-Type': 'application/json',
+      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  const addRobotHeaders = (token) => ({
+    headers: {
+      // 'Content-Type': 'multipart/form-data',
       'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
       Authorization: `Bearer ${token}`,
     },
@@ -47,11 +57,12 @@ function App() {
   }
 
   const exchangeTokenForAuth = (token) => {
-    const response = axios
+    axios
       .get(`${url}/auth/session`, headers(token))
-      .then(() => {
+      .then((response) => {
         setUser(response.data)
         setLoggedIn(true)
+        response.data.email === 'admin@mondorobot.com' ? setIsAdmin(true) : setIsAdmin(false)
       })
       .catch((error) => console.log(error))
   }
@@ -68,6 +79,7 @@ function App() {
       setBearerToken('')
       setLoggedIn(false)
       setUser(null)
+      setIsAdmin(false)
     })
   }
 
@@ -75,11 +87,17 @@ function App() {
     axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
   }
 
-  const addRobot = (robotName, imgURL) => {
+  const addRobot = (robotName, robotImg) => {
+    const requestBody = {
+      name: robotName,
+      image: robotImg,
+    }
+    console.log('requestBody :>> ', requestBody)
+    console.log('headers :>> ', headers(bearerToken))
     axios
-      .post(`${url}/robots`, { robotName, imgURL }, headers(bearerToken))
-      .then(() => alert('Robot Added'))
-      .catch((error) => console.log(error.response.statusText))
+      .post(`${url}/robots`, requestBody, addRobotHeaders(bearerToken))
+      .then((response) => console.log('response :>> ', response))
+      .catch((error) => console.log(error))
   }
 
   const getVotes = () => {
@@ -112,7 +130,7 @@ function App() {
   const ProtectedPages = () => (
     <Router>
       <Route path="/app">
-        <Nav logOut={logOut} />
+        <Nav logOut={logOut} isAdmin={isAdmin} />
       </Route>
       <Route path="/app/robots">
         <Robots robots={robots} addVote={addVote} removeVote={removeVote} />
@@ -120,6 +138,7 @@ function App() {
       <Route path="/app/results">
         <Results robots={robots} votes={votes} />
       </Route>
+      <Route path="/app/admin">{isAdmin ? <Admin robots={robots} addRobot={addRobot} /> : <Redirect to="/app/robots" />}</Route>
     </Router>
   )
 
