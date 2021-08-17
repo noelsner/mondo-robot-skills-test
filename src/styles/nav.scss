@@ -1,0 +1,180 @@
+@import './variables.scss';
+
+.header {
+  background-color: $white;
+  box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.17);
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14.5px 32px;
+
+    .nav-menu-left {
+      display: flex;
+    }
+
+    .nav-menu {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      ul {
+        display: flex;
+        padding: 0;
+        margin: 0;
+
+        li {
+          margin-left: 40px;
+
+          a {
+            color: $gray3;
+            font-size: 18px;
+            font-weight: 700;
+          }
+        }
+
+        .secondary-link {
+          margin-left: 24px;
+
+          a {
+            color: $gray2;
+            font-size: 16px;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+
+    .nav-logo {
+      margin-right: 16px;
+
+      img {
+        height: 32px;
+        width: auto;
+      }
+    }
+  }
+
+  .hamburger {
+    display: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+  }
+
+  .bar {
+    display: block;
+    width: 33px;
+    height: 2px;
+    margin: 6px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: $gray3;
+  }
+
+  a {
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  a:focus,
+  .hamburger:focus {
+    outline: none;
+    box-shadow: $focus-shadow;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .header {
+    transition: background-color 0.2s ease-in-out;
+
+    .navbar {
+      .nav-menu {
+        margin-left: -32px;
+        padding-top: 64px;
+        position: fixed;
+        top: -100%;
+        flex-direction: column;
+        justify-content: start;
+        background-color: $gray3;
+        width: 100vw;
+        text-align: center;
+        opacity: 1;
+        transition: all 0.2s;
+        color: $gray1;
+        height: calc(100vh - 64px);
+
+        ul {
+          flex-direction: column;
+
+          li {
+            margin-left: 0;
+            margin-top: 63px;
+
+            a {
+              color: $gray1;
+              font-size: 40px;
+              font-weight: 700;
+            }
+
+            a.current {
+              color: $white;
+            }
+          }
+
+          .secondary-link {
+            margin-left: 0;
+            margin-top: 63px;
+
+            a {
+              color: $gray1;
+              font-size: 40px;
+              font-weight: 700;
+            }
+
+            a.current {
+              color: $white;
+            }
+          }
+        }
+      }
+
+      .nav-menu-left {
+        flex-direction: column;
+      }
+
+      .nav-menu.active {
+        top: 0;
+        opacity: 1;
+      }
+
+      .nav-item {
+        margin: 2.5rem 0;
+      }
+    }
+
+    .hamburger {
+      display: block;
+      cursor: pointer;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+      background-color: $white;
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+      background-color: $white;
+    }
+  }
+
+  .header.active {
+    background-color: $gray3;
+  }
+}
