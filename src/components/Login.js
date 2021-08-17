@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import TextField from '@material-ui/core/TextField'
+import '../styles/Login.scss'
 
 const Login = ({ logIn, loginError, setLoginError }) => {
-  const [email, setEmail] = useState('admin@mondorobot.com')
-  const [password, setPassword] = useState('R0bot4Lif3')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  // const [email, setEmail] = useState('admin@mondorobot.com')
+  // const [password, setPassword] = useState('R0bot4Lif3')
 
   useEffect(() => {
     setLoginError('')
@@ -15,27 +19,27 @@ const Login = ({ logIn, loginError, setLoginError }) => {
   }
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit">Submit</button>
-        {loginError && <p>{loginError}</p>}
-      </form>
-      <Link to="/register">Register</Link>
+    <div className="container">
+      <div className="login-card">
+        <img src="/assets/MondoRobotLogo.png" alt="Mondo Robot Logo" />
+        <form onSubmit={onSubmit}>
+          <div className="text-input">
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" name="email" variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="text-input">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" name="password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <button type="submit" className="button-primary">
+            Log in
+          </button>
+          {loginError && <p>{loginError}</p>}
+        </form>
+        <Link to="/register" className="button-secondary">
+          Register
+        </Link>
+      </div>
     </div>
   )
 }

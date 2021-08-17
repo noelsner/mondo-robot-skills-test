@@ -1,0 +1,77 @@
+// Colors
+$white: #ffffff;
+$gray0: #f4f6f8;
+$gray1: #d8dadb;
+$gray2: #737475;
+$gray3: #414242;
+
+%button-primary {
+  background-color: $gray3;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 32px;
+  border-radius: 8px;
+  color: $white;
+  font-size: 18px;
+  font-weight: 700;
+  border: 2px solid $gray3;
+}
+
+%button-primary:hover {
+  background-color: $gray2;
+  border: 2px solid $gray2;
+}
+
+%button-primary:focus {
+  outline: none;
+  box-shadow: rgba(65, 66, 66, 0) 0px 0px 0px 1px, rgba(59, 130, 246, 0.5) 0px 0px 0px 2px;
+  // box-shadow: rgba(255, 255, 255, 1) 0px 0px 0px 2px, $gray3 0px 0px 0px 4px;
+}
+
+%button-secondary {
+  @extend %button-primary;
+  background-color: $white;
+  color: $gray3;
+  border: 2px solid $gray3;
+}
+
+%button-secondary:hover {
+  background-color: $gray0;
+}
+
+%text-input {
+  display: flex;
+  flex-direction: column;
+  color: $gray2;
+
+  label {
+    background-color: $white;
+    font-size: 18px;
+    margin: 0 0 -6px 23px;
+    z-index: 50;
+    width: max-content;
+    padding: 0 4px;
+  }
+
+  input {
+    background: $white;
+    border: 1px solid $gray1;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 400;
+    padding: 20px 27px;
+    z-index: 40;
+  }
+
+  input:focus {
+    outline: none;
+    border: 1px solid $gray3;
+    // box-shadow: rgba(255, 255, 255, 1) 0px 0px 0px 2px, $gray3 0px 0px 0px 3px;
+    box-shadow: rgba(65, 66, 66, 0) 0px 0px 0px 1px, rgba(59, 130, 246, 0.5) 0px 0px 0px 2px;
+  }
+}
+%text-input:focus-within {
+  color: $gray3;
+}

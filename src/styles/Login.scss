@@ -1,0 +1,61 @@
+@import './variables.scss';
+
+.container {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 100vh;
+  padding: 0 24px;
+
+  .login-card {
+    display: flex;
+    flex-direction: column;
+    background-color: $white;
+    border: 1px solid $gray1;
+    box-shadow: 0px 9px 15px -9px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 80px 54px;
+    width: 100%;
+    max-width: 500px;
+
+    img {
+      max-width: 233px;
+      height: auto;
+      margin: 0 0 80px;
+      align-self: center;
+    }
+
+    .text-input {
+      @extend %text-input;
+      margin-bottom: 40px;
+    }
+
+    .button-primary {
+      @extend %button-primary;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .button-secondary {
+      @extend %button-secondary;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    display: block;
+    background-color: $white;
+
+    .login-card {
+      padding: 74px 0;
+      box-shadow: none;
+      border: none;
+
+      img {
+        width: 165px;
+      }
+    }
+  }
+}
