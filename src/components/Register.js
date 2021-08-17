@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import '../styles/Login.scss'
+import '../styles/login.scss'
 
 const Register = ({ register, registerError, setRegisterError }) => {
   const [name, setName] = useState('')

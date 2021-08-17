@@ -7,9 +7,10 @@ $gray3: #414242;
 $error-text: #991b1b;
 $error-bg: #fef2f2;
 
-// Focus Shadow
+// Shadows
 $focus-shadow: rgba(65, 66, 66, 0) 0px 0px 0px 1px, rgba(59, 130, 246, 0.5) 0px 0px 0px 2px;
 // $focus-shadow: rgba(255, 255, 255, 1) 0px 0px 0px 2px, $gray3 0px 0px 0px 3px;
+$card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
 
 %button-primary {
   background-color: $gray3;
@@ -23,6 +24,7 @@ $focus-shadow: rgba(65, 66, 66, 0) 0px 0px 0px 1px, rgba(59, 130, 246, 0.5) 0px 
   font-size: 18px;
   font-weight: 700;
   border: 2px solid $gray3;
+  cursor: pointer;
 }
 
 %button-primary:hover {
@@ -33,6 +35,13 @@ $focus-shadow: rgba(65, 66, 66, 0) 0px 0px 0px 1px, rgba(59, 130, 246, 0.5) 0px 
 %button-primary:focus {
   outline: none;
   box-shadow: $focus-shadow;
+}
+
+%button-primary[disabled] {
+  background-color: $gray1;
+  color: $gray2;
+  border-color: $gray1;
+  cursor: not-allowed;
 }
 
 %button-secondary {
