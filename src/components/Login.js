@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import TextField from '@material-ui/core/TextField'
 import '../styles/Login.scss'
 
 const Login = ({ logIn, loginError, setLoginError }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  // const [email, setEmail] = useState('admin@mondorobot.com')
-  // const [password, setPassword] = useState('R0bot4Lif3')
-
-  useEffect(() => {
-    setLoginError('')
-  }, [email, password, setLoginError])
+  const [email, setEmail] = useState('admin@mondorobot.com')
+  const [password, setPassword] = useState('R0bot4Lif3')
 
   const onSubmit = (e) => {
     e.preventDefault()
+    setLoginError('')
     logIn(email, password)
   }
 
@@ -31,10 +25,10 @@ const Login = ({ logIn, loginError, setLoginError }) => {
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
+          {loginError && <p className="error-message">{loginError}</p>}
           <button type="submit" className="button-primary">
             Log in
           </button>
-          {loginError && <p>{loginError}</p>}
         </form>
         <Link to="/register" className="button-secondary">
           Register
