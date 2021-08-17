@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 
-const Admin = ({ robots, addRobot, deleteRobot }) => {
+const Admin = ({ robots, addRobot, removeRobot }) => {
   const [robotName, setRobotName] = useState('')
   const [robotImg, setRobotImg] = useState({})
 
@@ -8,9 +8,10 @@ const Admin = ({ robots, addRobot, deleteRobot }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log('in submit', robotImgRef.current.files[0])
-    setRobotImg(URL.createObjectURL(robotImgRef.current.files[0]))
-    addRobot(robotName, robotImg.file)
+    const formData = new FormData()
+    formData.append('name', robotName)
+    formData.append('image', robotImgRef.current.files[0])
+    addRobot(formData)
   }
 
   const handleImage = () => {
@@ -20,7 +21,6 @@ const Admin = ({ robots, addRobot, deleteRobot }) => {
     })
   }
 
-  // console.log(robots[0].url)
   return (
     <div>
       <h3>Admin</h3>
@@ -35,13 +35,12 @@ const Admin = ({ robots, addRobot, deleteRobot }) => {
         </div>
         <button type="submit">Add Robot</button>
       </form>
-      {robotImg ? <img src={robotImg} alt="" /> : ''}
       <ul>
         {robots.map((robot) => (
           <li key={robot.id}>
             <h2>{robot.name}</h2>
             <img src={robot.url} alt={robot.name} />
-            {/* <button onClick={() => addVote(robot.id)}>Delete</button> */}
+            <button onClick={() => removeRobot(robot.id)}>Delete</button>
           </li>
         ))}
       </ul>

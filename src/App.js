@@ -31,7 +31,7 @@ function App() {
 
   const addRobotHeaders = (token) => ({
     headers: {
-      // 'Content-Type': 'multipart/form-data',
+      'Content-Type': 'multipart/form-data',
       'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
       Authorization: `Bearer ${token}`,
     },
@@ -87,17 +87,15 @@ function App() {
     axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
   }
 
-  const addRobot = (robotName, robotImg) => {
-    const requestBody = {
-      name: robotName,
-      image: robotImg,
-    }
-    console.log('requestBody :>> ', requestBody)
-    console.log('headers :>> ', headers(bearerToken))
+  const addRobot = (newRobot) => {
     axios
-      .post(`${url}/robots`, requestBody, addRobotHeaders(bearerToken))
-      .then((response) => console.log('response :>> ', response))
+      .post(`${url}/robots`, newRobot, addRobotHeaders(bearerToken))
+      .then(() => getRobots())
       .catch((error) => console.log(error))
+  }
+
+  const removeRobot = (robotId) => {
+    axios.delete(`${url}/robots/${robotId}`, headers(bearerToken)).then(() => getRobots())
   }
 
   const getVotes = () => {
@@ -138,7 +136,9 @@ function App() {
       <Route path="/app/results">
         <Results robots={robots} votes={votes} />
       </Route>
-      <Route path="/app/admin">{isAdmin ? <Admin robots={robots} addRobot={addRobot} /> : <Redirect to="/app/robots" />}</Route>
+      <Route path="/app/admin">
+        {isAdmin ? <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} /> : <Redirect to="/app/robots" />}
+      </Route>
     </Router>
   )
 
