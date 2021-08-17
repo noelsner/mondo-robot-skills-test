@@ -85,7 +85,7 @@
     box-shadow: $focus-shadow;
   }
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 600px) {
   .header {
     transition: background-color 0.2s ease-in-out;
 
