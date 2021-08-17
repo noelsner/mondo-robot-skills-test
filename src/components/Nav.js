@@ -11,9 +11,6 @@ const Nav = ({ logOut, isAdmin }) => {
   const location = useLocation()
   const onCurrentPage = (pathName) => (location.pathname.replace('/app/', '') === pathName ? 'current' : '')
 
-  console.log('location :>> ', location.pathname.replace('/app/', ''))
-  console.log('onCurrentPage :>> ', onCurrentPage('robots'))
-
   const handleHamburgerClick = () => {
     navMenu.current.classList.toggle('active')
     hamburger.current.classList.toggle('active')

@@ -19,6 +19,7 @@ function App() {
   const [registerError, setRegisterError] = useState('')
   const [robots, setRobots] = useState([])
   const [votes, setVotes] = useState([])
+  const [userVotes, setUserVotes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
 
   const headers = (token) => ({
@@ -106,7 +107,7 @@ function App() {
     axios
       .post(`${url}/votes`, { robot: robotId }, headers(bearerToken))
       .then(() => {
-        const userVotes = votes.filter((vote) => vote.user === user.id)
+        // const userVotes = votes.filter((vote) => vote.user === user.id)
         if (userVotes.length > 0) userVotes.map((vote) => removeVote(vote.id))
         getVotes()
         alert('Vote Added')
@@ -125,13 +126,17 @@ function App() {
     }
   }, [loggedIn])
 
+  useEffect(() => {
+    setUserVotes(votes.filter((vote) => vote.user === user.id))
+  }, [votes, user])
+
   const ProtectedPages = () => (
     <Router>
       <Route path="/app">
         <Nav logOut={logOut} isAdmin={isAdmin} />
       </Route>
       <Route path="/app/robots">
-        <Robots robots={robots} addVote={addVote} removeVote={removeVote} />
+        <Robots robots={robots} addVote={addVote} userVotes={userVotes} />
       </Route>
       <Route path="/app/results">
         <Results robots={robots} votes={votes} />
