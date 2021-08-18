@@ -19,7 +19,6 @@ function App() {
   const [registerError, setRegisterError] = useState('')
   const [robots, setRobots] = useState([])
   const [votes, setVotes] = useState([])
-  const [userVotes, setUserVotes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
 
   const headers = (token) => ({
@@ -104,19 +103,22 @@ function App() {
   }
 
   const addVote = (robotId) => {
+    removeUserVoteIfExists()
     axios
       .post(`${url}/votes`, { robot: robotId }, headers(bearerToken))
-      .then(() => {
-        // const userVotes = votes.filter((vote) => vote.user === user.id)
-        if (userVotes.length > 0) userVotes.map((vote) => removeVote(vote.id))
-        getVotes()
-        alert('Vote Added')
+      .then((response) => {
+        setVotes((prev) => [...prev, response.data])
       })
       .catch((error) => console.log(error.response.statusText))
   }
 
-  const removeVote = (voteId) => {
-    axios.delete(`${url}/votes/${voteId}`, headers(bearerToken)).then(() => getVotes())
+  const removeUserVoteIfExists = () => {
+    const userVote = votes.find((vote) => vote.user === user.id)
+    if (userVote) {
+      axios.delete(`${url}/votes/${userVote.id}`, headers(bearerToken)).then(() => {
+        setVotes((prev) => prev.filter((vote) => vote.id !== userVote.id))
+      })
+    }
   }
 
   useEffect(() => {
@@ -126,17 +128,13 @@ function App() {
     }
   }, [loggedIn])
 
-  useEffect(() => {
-    setUserVotes(votes.filter((vote) => vote.user === user?.id))
-  }, [votes, user])
-
   const ProtectedPages = () => (
     <Router>
       <Route path="/app">
         <Nav logOut={logOut} isAdmin={isAdmin} />
       </Route>
       <Route path="/app/robots">
-        <Robots robots={robots} addVote={addVote} userVotes={userVotes} />
+        <Robots robots={robots} addVote={addVote} votes={votes} user={user} />
       </Route>
       <Route path="/app/results">
         <Results robots={robots} votes={votes} />
