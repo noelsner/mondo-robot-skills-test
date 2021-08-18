@@ -64,7 +64,7 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
     background-color: $white;
     font-size: 18px;
     margin: 0 0 -6px 23px;
-    z-index: 50;
+    z-index: 1;
     width: max-content;
     padding: 0 4px;
   }
@@ -76,7 +76,7 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
     font-size: 18px;
     font-weight: 400;
     padding: 20px 27px;
-    z-index: 40;
+    // z-index: 0;
   }
 
   input:focus {
@@ -89,3 +89,72 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
 %text-input:focus-within {
   color: $gray3;
 }
+
+// Robots + Results + Admin base styles
+%robot-card-title {
+  margin: 64px 0;
+  color: $gray3;
+  font-size: 60px;
+  font-weight: 700;
+}
+
+%robot-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+  margin: 80px auto;
+  justify-content: center;
+  max-width: 1250px;
+}
+
+%robot-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, max-content));
+  justify-items: center;
+  max-width: 1248px;
+  column-gap: 24px;
+  row-gap: 45px;
+  max-width: 1248px;
+  justify-content: center;
+}
+
+%robot-card {
+  background-color: $white;
+  border: 1px solid $gray1;
+  box-sizing: border-box;
+  box-shadow: $card-shadow;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 24px;
+}
+
+%robot-card-h2 {
+  color: $gray3;
+  font-weight: 700;
+  font-size: 22px;
+  text-transform: capitalize;
+  margin: 0 0 20px;
+}
+
+%robot-card-image-container {
+  height: 321px;
+  width: 349px;
+  // max-height: 321px;
+  // max-width: 349px;
+  // min-height: 321px;
+  // min-width: 349px;
+  margin-bottom: 36px;
+}
+%robot-card-img {
+  height: auto;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+// Media Query Variables
+$media-breakpoint-1: 1327px;
+$media-breakpoint-2: 903px;
+$media-breakpoint-3: 420px;

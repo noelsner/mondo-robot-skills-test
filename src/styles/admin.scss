@@ -1,0 +1,234 @@
+@import './variables.scss';
+
+.admin-wrapper {
+  @extend %robot-card-wrapper;
+
+  .button-primary {
+    @extend %button-primary;
+    width: 100%;
+  }
+
+  .button-secondary {
+    @extend %button-secondary;
+    width: 100%;
+  }
+
+  .button-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 16px;
+  }
+
+  .add-robot-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    width: 100%;
+    gap: 24px;
+
+    .text-input {
+      display: flex;
+      flex-direction: column;
+      color: $gray2;
+      margin: 12px 0 58px;
+
+      label {
+        background-color: $white;
+        font-size: 18px;
+        margin: -78px 0 0 23px;
+        width: max-content;
+        padding: 0 4px;
+      }
+
+      input {
+        background: $white;
+        border: 1px solid $gray1;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 400;
+        padding: 20px 27px;
+      }
+
+      input:focus {
+        outline: none;
+        border: 1px solid $gray3;
+        box-shadow: $focus-shadow;
+      }
+    }
+
+    .text-input:focus-within {
+      color: $gray3;
+    }
+
+    .image-upload {
+      .robot-image-preview {
+        height: 208px;
+        width: 349px;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+
+        img {
+          object-fit: cover;
+          object-position: center;
+          height: 100%;
+          width: auto;
+        }
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 21px;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 23px;
+        color: $gray3;
+        cursor: pointer;
+        width: 349px;
+        height: 204px;
+        background: #eceef0;
+        border: 2px dashed $gray2;
+        box-sizing: border-box;
+        border-radius: 8px;
+      }
+
+      label:hover {
+        background-color: #f8f8f8;
+      }
+
+      .image-upload:focus-within {
+        border: 1px solid red;
+        box-shadow: $focus-shadow;
+      }
+
+      input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+      }
+    }
+
+    .image-button-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .clear-button {
+        border: none;
+        background-color: transparent;
+        text-decoration: underline;
+        color: $gray3;
+        font-size: 20px;
+        padding: 4px 8px;
+        border-radius: 8px;
+        cursor: pointer;
+        height: min-content;
+        margin: 0 24px;
+      }
+
+      .clear-button:hover {
+        color: $gray2;
+      }
+
+      .clear-button:focus {
+        outline: none;
+        box-shadow: $focus-shadow;
+      }
+    }
+  }
+
+  .title {
+    @extend %robot-card-title;
+  }
+
+  .robot-card-container {
+    @extend %robot-card-container;
+
+    .robot-card {
+      @extend %robot-card;
+
+      h2 {
+        @extend %robot-card-h2;
+      }
+
+      .image-container {
+        @extend %robot-card-image-container;
+
+        img {
+          @extend %robot-card-img;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $media-breakpoint-1) {
+  .admin-wrapper {
+    max-width: 825px;
+  }
+}
+
+@media only screen and (max-width: $media-breakpoint-2) {
+  .admin-wrapper {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: $media-breakpoint-3) {
+  .admin-wrapper {
+    padding: 0;
+
+    .title {
+      margin-left: 32px;
+    }
+
+    .robot-card-container {
+      padding: 0 8px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+
+      .robot-card {
+        width: 100%;
+
+        .image-container {
+          width: 100%;
+          height: auto;
+        }
+
+        .add-robot-form {
+          .image-upload {
+            .robot-image-preview {
+              width: 100%;
+            }
+
+            label {
+              width: 100%;
+            }
+          }
+
+          .image-button-container {
+            gap: 0px;
+
+            .button-primary {
+              padding-left: 8px;
+              padding-right: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,10 +1,9 @@
-import '../styles/robots.scss'
 import '../styles/results.scss'
 import RobotCard from './RobotCard'
 
 const Results = ({ robots, votes }) => {
   return (
-    <div className="wrapper">
+    <div className="results-wrapper">
       <h3 className="title">Results</h3>
       <ul className="robot-card-container">
         {robots.map((robot) => {

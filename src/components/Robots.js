@@ -3,7 +3,7 @@ import '../styles/robots.scss'
 
 const Robots = ({ robots, addVote, userVotes }) => {
   return (
-    <div className="wrapper">
+    <div className="robots-wrapper">
       <h3 className="title">Robots</h3>
       <ul className="robot-card-container">
         {robots.map((robot) => {

@@ -109,6 +109,7 @@
         transition: all 0.2s;
         color: $gray1;
         height: calc(100vh - 64px);
+        z-index: 10;
 
         ul {
           flex-direction: column;
@@ -162,6 +163,7 @@
     .hamburger {
       display: block;
       cursor: pointer;
+      z-index: 11;
     }
 
     .hamburger.active .bar:nth-child(2) {

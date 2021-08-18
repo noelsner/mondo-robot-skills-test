@@ -4,7 +4,7 @@
   width: 100%;
 
   .vote-count {
-    margin: -20px 0 18px;
+    margin: 0 0 18px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -21,7 +21,6 @@
       font-weight: 700;
       color: $gray2;
       margin-left: 2px;
-      // padding-bottom: 4px;
       line-height: 22px;
     }
 
@@ -44,6 +43,72 @@
       background-color: $gray3;
       border-radius: 5px;
       height: 29px;
+    }
+  }
+}
+
+.title {
+  @extend %robot-card-title;
+}
+
+.results-wrapper {
+  @extend %robot-card-wrapper;
+
+  .robot-card-container {
+    @extend %robot-card-container;
+
+    .robot-card {
+      @extend %robot-card;
+
+      h2 {
+        @extend %robot-card-h2;
+        margin: 0 0 16px;
+      }
+
+      .image-container {
+        @extend %robot-card-image-container;
+        margin-bottom: 16px;
+
+        img {
+          @extend %robot-card-img;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $media-breakpoint-1) {
+  .results-wrapper {
+    max-width: 825px;
+  }
+}
+
+@media only screen and (max-width: $media-breakpoint-2) {
+  .results-wrapper {
+    max-width: 400px;
+  }
+}
+
+@media only screen and (max-width: $media-breakpoint-3) {
+  .results-wrapper {
+    padding: 0;
+
+    .title {
+      margin-left: 32px;
+    }
+
+    .robot-card-container {
+      padding: 0 8px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
+
+      .robot-card {
+        width: 100%;
+
+        .image-container {
+          width: 100%;
+          height: auto;
+        }
+      }
     }
   }
 }
