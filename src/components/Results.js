@@ -1,18 +1,28 @@
+import '../styles/robots.scss'
+import '../styles/results.scss'
+import RobotCard from './RobotCard'
+
 const Results = ({ robots, votes }) => {
   return (
-    <div>
-      <h3>Results</h3>
-      <ul>
+    <div className="wrapper">
+      <h3 className="title">Results</h3>
+      <ul className="robot-card-container">
         {robots.map((robot) => {
           const votesForRobots = votes.filter((vote) => vote.robot === robot.id)
+          const percentage = (votesForRobots.length / votes.length) * 100 + '%'
           return (
-            <li key={robot.id}>
-              <h2>{robot.name}</h2>
-              <img src={robot.url} alt={robot.name} />
-              <p>
-                {votesForRobots.length} / {votes.length}
-              </p>
-            </li>
+            <RobotCard robot={robot} key={robot.id}>
+              <div className="results">
+                <div className="vote-count">
+                  <span className="robot-votes">{votesForRobots.length}</span>
+                  <span className="slash">/</span>
+                  <span className="total-votes">{votes.length}</span>
+                </div>
+                <div className="progress-bar-container">
+                  <div className="progress-bar" style={{ width: percentage }}></div>
+                </div>
+              </div>
+            </RobotCard>
           )
         })}
       </ul>

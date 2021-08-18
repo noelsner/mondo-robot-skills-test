@@ -127,7 +127,7 @@ function App() {
   }, [loggedIn])
 
   useEffect(() => {
-    setUserVotes(votes.filter((vote) => vote.user === user.id))
+    setUserVotes(votes.filter((vote) => vote.user === user?.id))
   }, [votes, user])
 
   const ProtectedPages = () => (
