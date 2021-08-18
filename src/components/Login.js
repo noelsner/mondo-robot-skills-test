@@ -19,11 +19,11 @@ const Login = ({ logIn, loginError, setLoginError }) => {
         <form onSubmit={onSubmit}>
           <div className="text-input">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" variant="outlined" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="text-input">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           {loginError && <p className="error-message">{loginError}</p>}
           <button type="submit" className="button-primary">
