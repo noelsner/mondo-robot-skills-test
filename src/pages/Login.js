@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/login.scss'
-import Loading from '../components/Loading'
 
-const Login = ({ logIn, loginError, setLoginError, isLoading, setIsLoading }) => {
-  const [email, setEmail] = useState('admin@mondorobot.com')
-  const [password, setPassword] = useState('R0bot4Lif3')
+const Login = ({ logIn, loginError, setLoginError, setIsLoading }) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -16,7 +15,6 @@ const Login = ({ logIn, loginError, setLoginError, isLoading, setIsLoading }) =>
 
   return (
     <div className="container">
-      {isLoading && <Loading />}
       <div className="login-card">
         <img src="/assets/MondoRobotLogo.png" alt="Mondo Robot Logo" />
         <form onSubmit={onSubmit}>
