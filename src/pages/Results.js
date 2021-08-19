@@ -1,5 +1,5 @@
 import '../styles/results.scss'
-import RobotCard from './RobotCard'
+import RobotCard from '../components/RobotCard'
 
 const Results = ({ robots, votes }) => {
   return (

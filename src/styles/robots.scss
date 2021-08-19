@@ -29,6 +29,7 @@
   .button-primary {
     @extend %button-primary;
     width: 150px;
+    white-space: nowrap;
   }
 }
 

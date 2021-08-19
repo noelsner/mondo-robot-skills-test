@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import RobotCard from './RobotCard'
+import RobotCard from '../components/RobotCard'
 import Confetti from 'react-dom-confetti'
 import '../styles/robots.scss'
 

@@ -63,6 +63,8 @@
     }
 
     .image-upload {
+      border-radius: 8px;
+
       .robot-image-preview {
         height: 208px;
         width: 349px;
@@ -106,11 +108,6 @@
         background-color: #f8f8f8;
       }
 
-      .image-upload:focus-within {
-        border: 1px solid red;
-        box-shadow: $focus-shadow;
-      }
-
       input {
         width: 0.1px;
         height: 0.1px;
@@ -119,6 +116,10 @@
         position: absolute;
         z-index: -1;
       }
+    }
+
+    .image-upload:focus-within {
+      box-shadow: $focus-shadow;
     }
 
     .image-button-container {
