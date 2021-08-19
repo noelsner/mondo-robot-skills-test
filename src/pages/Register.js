@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/login.scss'
 
@@ -7,13 +7,10 @@ const Register = ({ register, registerError, setRegisterError, setIsLoading }) =
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    setRegisterError('')
-  }, [email, password, setRegisterError])
-
   const onSubmit = (e) => {
     e.preventDefault()
     setIsLoading(true)
+    setRegisterError('')
     register(name, email, password)
   }
 
@@ -24,26 +21,26 @@ const Register = ({ register, registerError, setRegisterError, setIsLoading }) =
         <form onSubmit={onSubmit}>
           <div className="input-container">
             <div className="text-input">
-              <input type="text" id="register-name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
+              <input type="text" id="register-name" name="name" required value={name} onChange={(e) => setName(e.target.value)} />
               <label htmlFor="register-name">Full Name</label>
             </div>
           </div>
           <div className="input-container">
             <div className="text-input">
-              <input type="email" id="register-email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input type="email" id="register-email" name="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
               <label htmlFor="register-email">Email</label>
             </div>
           </div>
           <div className="input-container">
             <div className="text-input">
-              <input type="password" id="register-password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input type="password" id="register-password" name="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
               <label htmlFor="register-password">Password</label>
             </div>
           </div>
+          {registerError && <p className="error-message">{registerError}</p>}
           <button type="submit" className="button-primary">
             Register
           </button>
-          {registerError && <p>{registerError}</p>}
         </form>
         <Link to="/" className="button-secondary">
           Back to Login
