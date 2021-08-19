@@ -8,6 +8,7 @@ import Robots from './pages/Robots'
 import Results from './pages/Results'
 import Nav from './components/Nav'
 import Admin from './pages/Admin'
+import Loading from './components/Loading'
 
 const url = 'https://mondo-robot-art-api.herokuapp.com'
 
@@ -20,6 +21,8 @@ function App() {
   const [robots, setRobots] = useState([])
   const [votes, setVotes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [loggingOut, setLoggingOut] = useState(false)
 
   const headers = (token) => ({
     headers: {
@@ -63,6 +66,7 @@ function App() {
         setUser(response.data)
         setLoggedIn(true)
         response.data.email === 'admin@mondorobot.com' ? setIsAdmin(true) : setIsAdmin(false)
+        setIsLoading(false)
       })
       .catch((error) => console.log(error))
   }
@@ -80,6 +84,7 @@ function App() {
       setLoggedIn(false)
       setUser(null)
       setIsAdmin(false)
+      setLoggingOut(false)
     })
   }
 
@@ -131,7 +136,7 @@ function App() {
   const ProtectedPages = () => (
     <Router>
       <Route path="/app">
-        <Nav logOut={logOut} isAdmin={isAdmin} />
+        <Nav logOut={logOut} isAdmin={isAdmin} setLoggingOut={setLoggingOut} />
       </Route>
       <Route path="/app/robots">
         <Robots robots={robots} addVote={addVote} votes={votes} user={user} />
@@ -147,17 +152,19 @@ function App() {
 
   const AuthPages = () => (
     <Router>
+      {isLoading && <Loading />}
       <Route exact path="/">
-        <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} />
+        <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} setIsLoading={setIsLoading} />
       </Route>
       <Route path="/register">
-        <Register register={register} registerError={registerError} setRegisterError={setRegisterError} />
+        <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
       </Route>
     </Router>
   )
 
   return (
     <Router>
+      {loggingOut && <Loading loggingOut={loggingOut} />}
       <Route exact path="/">
         {loggedIn ? <Redirect to="/app/robots" /> : <AuthPages />}
       </Route>

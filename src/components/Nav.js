@@ -2,8 +2,7 @@ import { useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import '../styles/nav.scss'
 
-const Nav = ({ logOut, isAdmin }) => {
-  // const [onCurrentPage, setOnCurrentPage] = useState(false)
+const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   const navMenu = useRef()
   const hamburger = useRef()
   const header = useRef()
@@ -56,6 +55,7 @@ const Nav = ({ logOut, isAdmin }) => {
                 onClick={() => {
                   closeMenu()
                   logOut()
+                  setLoggingOut(true)
                 }}
               >
                 Logout
