@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
-import Login from './components/Login'
-import Register from './components/Register'
-import Robots from './components/Robots'
-import Results from './components/Results'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Robots from './pages/Robots'
+import Results from './pages/Results'
 import Nav from './components/Nav'
-import Admin from './components/Admin'
+import Admin from './pages/Admin'
 
 const url = 'https://mondo-robot-art-api.herokuapp.com'
 

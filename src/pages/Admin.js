@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import RobotCard from './RobotCard'
+import RobotCard from '../components/RobotCard'
 import '../styles/admin.scss'
 
 const Admin = ({ robots, addRobot, removeRobot }) => {
