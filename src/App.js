@@ -23,6 +23,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
+  const [addingRobot, setAddingRobot] = useState(false)
 
   const headers = (token) => ({
     headers: {
@@ -56,7 +57,10 @@ function App() {
         return token
       })
       .then((token) => exchangeTokenForAuth(token))
-      .catch((error) => setLoginError(error.response.statusText))
+      .catch((error) => {
+        setLoginError(error.response.statusText)
+        setIsLoading(false)
+      })
   }
 
   const exchangeTokenForAuth = (token) => {
@@ -92,10 +96,20 @@ function App() {
     axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
   }
 
+  const addRobotConfirmation = () => {
+    setAddingRobot(true)
+    setTimeout(() => {
+      setAddingRobot(false)
+    }, 3000)
+  }
+
   const addRobot = (newRobot) => {
     axios
       .post(`${url}/robots`, newRobot, addRobotHeaders(bearerToken))
-      .then((response) => setRobots((prev) => [...prev, response.data]))
+      .then((response) => {
+        setRobots((prev) => [...prev, response.data])
+        addRobotConfirmation()
+      })
       .catch((error) => console.log(error))
   }
 
@@ -145,7 +159,7 @@ function App() {
         <Results robots={robots} votes={votes} />
       </Route>
       <Route path="/app/admin">
-        {isAdmin ? <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} /> : <Redirect to="/app/robots" />}
+        {isAdmin ? <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} /> : <Redirect to="/app/robots" />}
       </Route>
     </Router>
   )
