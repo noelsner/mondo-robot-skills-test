@@ -95,10 +95,6 @@ function App() {
     })
   }
 
-  const getRobots = () => {
-    axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
-  }
-
   const addRobotConfirmation = () => {
     setAddingRobot(true)
     setTimeout(() => {
@@ -122,10 +118,6 @@ function App() {
     })
   }
 
-  const getVotes = () => {
-    axios.get(`${url}/votes`, headers(bearerToken)).then((response) => setVotes(response.data))
-  }
-
   const addVote = (robotId) => {
     removeUserVoteIfExists()
     axios
@@ -144,11 +136,19 @@ function App() {
   }
 
   useEffect(() => {
+    const getRobots = () => {
+      axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
+    }
+
+    const getVotes = () => {
+      axios.get(`${url}/votes`, headers(bearerToken)).then((response) => setVotes(response.data))
+    }
+
     if (loggedIn) {
       getRobots()
       getVotes()
     }
-  }, [loggedIn])
+  }, [loggedIn, bearerToken])
 
   const ProtectedPages = () => (
     <Router>
