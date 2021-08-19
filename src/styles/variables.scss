@@ -144,9 +144,9 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
   margin-bottom: 36px;
 }
 %robot-card-img {
-  height: auto;
+  height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
