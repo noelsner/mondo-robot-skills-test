@@ -5,10 +5,7 @@ import '../styles/admin.scss'
 const Admin = ({ robots, addRobot, removeRobot }) => {
   const [robotName, setRobotName] = useState('')
   const [robotImg, setRobotImg] = useState(null)
-
   const robotImgRef = useRef()
-
-  console.log('robotImgRef :>> ', robotImgRef.current)
 
   const onSubmit = (e) => {
     e.preventDefault()

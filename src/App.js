@@ -90,12 +90,14 @@ function App() {
   const addRobot = (newRobot) => {
     axios
       .post(`${url}/robots`, newRobot, addRobotHeaders(bearerToken))
-      .then(() => getRobots())
+      .then((response) => setRobots((prev) => [...prev, response.data]))
       .catch((error) => console.log(error))
   }
 
   const removeRobot = (robotId) => {
-    axios.delete(`${url}/robots/${robotId}`, headers(bearerToken)).then(() => getRobots())
+    axios.delete(`${url}/robots/${robotId}`, headers(bearerToken)).then(() => {
+      setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
+    })
   }
 
   const getVotes = () => {
@@ -106,9 +108,7 @@ function App() {
     removeUserVoteIfExists()
     axios
       .post(`${url}/votes`, { robot: robotId }, headers(bearerToken))
-      .then((response) => {
-        setVotes((prev) => [...prev, response.data])
-      })
+      .then((response) => setVotes((prev) => [...prev, response.data]))
       .catch((error) => console.log(error.response.statusText))
   }
 
