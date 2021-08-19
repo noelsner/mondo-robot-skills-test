@@ -44,7 +44,6 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
   return (
     <div className="admin-wrapper">
       {addingRobot && <Confirmation />}
-      <Confirmation />
       <h3 className="title">Admin</h3>
       <ul className="robot-card-container">
         <li className="robot-card">
