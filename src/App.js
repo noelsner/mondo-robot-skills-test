@@ -20,6 +20,7 @@ function App() {
   const [robots, setRobots] = useState([])
   const [votes, setVotes] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const headers = (token) => ({
     headers: {
@@ -63,6 +64,7 @@ function App() {
         setUser(response.data)
         setLoggedIn(true)
         response.data.email === 'admin@mondorobot.com' ? setIsAdmin(true) : setIsAdmin(false)
+        setIsLoading(false)
       })
       .catch((error) => console.log(error))
   }
@@ -148,7 +150,7 @@ function App() {
   const AuthPages = () => (
     <Router>
       <Route exact path="/">
-        <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} />
+        <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} isLoading={isLoading} setIsLoading={setIsLoading} />
       </Route>
       <Route path="/register">
         <Register register={register} registerError={registerError} setRegisterError={setRegisterError} />

@@ -9,9 +9,9 @@ $error-bg: #fef2f2;
 
 // Shadows
 $focus-shadow: rgba(65, 66, 66, 0) 0px 0px 0px 1px, rgba(59, 130, 246, 0.5) 0px 0px 0px 2px;
-// $focus-shadow: rgba(255, 255, 255, 1) 0px 0px 0px 2px, $gray3 0px 0px 0px 3px;
 $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
 
+//Button Base Styles
 %button-primary {
   background-color: $gray3;
   display: flex;
@@ -55,16 +55,17 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
   background-color: $gray0;
 }
 
+//Input Base Styles
 %text-input {
   display: flex;
   flex-direction: column;
   color: $gray2;
+  margin: 12px 0 58px;
 
   label {
     background-color: $white;
     font-size: 18px;
-    margin: 0 0 -6px 23px;
-    z-index: 1;
+    margin: -78px 0 0 23px;
     width: max-content;
     padding: 0 4px;
   }
@@ -76,7 +77,6 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
     font-size: 18px;
     font-weight: 400;
     padding: 20px 27px;
-    // z-index: 0;
   }
 
   input:focus {
@@ -90,7 +90,7 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
   color: $gray3;
 }
 
-// Robots + Results + Admin base styles
+// Robots + Results + Admin Base Styles
 %robot-card-title {
   margin: 64px 0;
   color: $gray3;
@@ -141,10 +141,6 @@ $card-shadow: 0px 9px 15px 0px rgba(0, 0, 0, 0.12);
 %robot-card-image-container {
   height: 321px;
   width: 349px;
-  // max-height: 321px;
-  // max-width: 349px;
-  // min-height: 321px;
-  // min-width: 349px;
   margin-bottom: 36px;
 }
 %robot-card-img {
