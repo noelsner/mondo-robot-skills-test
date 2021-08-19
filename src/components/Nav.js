@@ -8,7 +8,7 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   const header = useRef()
 
   const location = useLocation()
-  const onCurrentPage = (pathName) => (location.pathname.replace('/app/', '') === pathName ? 'current' : '')
+  const onCurrentPage = (pathName) => (location.pathname.replace('/app/', '') === pathName ? styles.current : '')
 
   const handleHamburgerClick = () => {
     navMenu.current.classList.toggle(styles.active)
