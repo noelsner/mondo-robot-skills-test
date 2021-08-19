@@ -1,18 +1,18 @@
-import '../styles/loading.scss'
+import styles from '../styles/Loading.module.scss'
 
 const Loading = ({ loggingOut }) => {
   if (loggingOut) {
     return (
-      <div className="loading-logout">
-        <div className="wave">
+      <div className={styles.loadingLogout}>
+        <div className={styles.wave}>
           <span>👋</span>
         </div>
       </div>
     )
   }
   return (
-    <div className="loading">
-      <div className="ring">
+    <div className={styles.loading}>
+      <div className={styles.ring}>
         <div></div>
         <div></div>
         <div></div>

@@ -1,23 +1,23 @@
 @import './variables.scss';
 
-.title {
-  @extend %robot-card-title;
-}
-
-.robots-wrapper {
+.robotsWrapper {
   @extend %robot-card-wrapper;
 
-  .robot-card-container {
+  .title {
+    @extend %robot-card-title;
+  }
+
+  .robotCardContainer {
     @extend %robot-card-container;
 
-    .robot-card {
+    .robotCard {
       @extend %robot-card;
 
       h2 {
         @extend %robot-card-h2;
       }
 
-      .image-container {
+      .imageContainer {
         @extend %robot-card-image-container;
 
         img {
@@ -26,7 +26,7 @@
       }
     }
   }
-  .button-primary {
+  .buttonPrimary {
     @extend %button-primary;
     width: 150px;
     white-space: nowrap;
@@ -34,33 +34,33 @@
 }
 
 @media only screen and (max-width: $media-breakpoint-1) {
-  .robots-wrapper {
+  .robotsWrapper {
     max-width: 825px;
   }
 }
 
 @media only screen and (max-width: $media-breakpoint-2) {
-  .robots-wrapper {
+  .robotsWrapper {
     max-width: 400px;
   }
 }
 
 @media only screen and (max-width: $media-breakpoint-3) {
-  .robots-wrapper {
+  .robotsWrapper {
     padding: 0;
 
     .title {
       margin-left: 32px;
     }
 
-    .robot-card-container {
+    .robotCardContainer {
       padding: 0 8px;
       grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
 
-      .robot-card {
+      .robotCard {
         width: 100%;
 
-        .image-container {
+        .imageContainer {
           width: 100%;
           height: auto;
         }

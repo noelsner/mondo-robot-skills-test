@@ -7,7 +7,7 @@
   min-height: 100vh;
   padding: 0 24px;
 
-  .login-card {
+  .loginCard {
     display: flex;
     flex-direction: column;
     background-color: $white;
@@ -25,29 +25,29 @@
       align-self: center;
     }
 
-    .input-container {
+    .inputContainer {
       height: 77px;
       margin-bottom: 40px;
       display: block;
       padding: 2px 0 0;
     }
 
-    .text-input {
+    .textInput {
       @extend %text-input;
     }
 
-    .button-primary {
+    .buttonPrimary {
       @extend %button-primary;
       width: 100%;
       margin-bottom: 16px;
     }
 
-    .button-secondary {
+    .buttonSecondary {
       @extend %button-secondary;
       margin-bottom: 16px;
     }
 
-    .error-message {
+    .errorMessage {
       width: auto;
       border-radius: 8px;
       padding: 14px 32px;
@@ -63,7 +63,7 @@
     display: block;
     background-color: $white;
 
-    .login-card {
+    .loginCard {
       padding: 74px 0;
       box-shadow: none;
       border: none;

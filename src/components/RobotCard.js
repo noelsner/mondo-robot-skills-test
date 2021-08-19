@@ -1,10 +1,8 @@
-import '../styles/robots.scss'
-
-const RobotCard = ({ robot, children }) => {
+const RobotCard = ({ robot, children, parentStyles }) => {
   return (
-    <li key={robot.id} className="robot-card">
+    <li key={robot.id} className={parentStyles.robotCard}>
       <h2>{robot.name}</h2>
-      <div className="image-container">
+      <div className={parentStyles.imageContainer}>
         <img src={robot.url} alt={robot.name} />
       </div>
       {children}

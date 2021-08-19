@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import RobotCard from '../components/RobotCard'
-import '../styles/admin.scss'
+import styles from '../styles/Admin.module.scss'
 
 const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
   const [robotName, setRobotName] = useState('')
@@ -27,11 +27,11 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
 
   const Confirmation = () => {
     return (
-      <div className="added-robot-confirmation">
+      <div className={styles.addedRobotConfirmation}>
         <div>
           Robot Added
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 78 78">
-            <g fill="currentColor" fill-rule="evenodd">
+            <g fill="currentColor" fillRule="evenodd">
               <path d="M38.98 77.808C17.68 77.808.35 60.48.35 39.18S17.68.551 38.98.551c21.299 0 38.627 17.33 38.627 38.63 0 21.299-17.328 38.627-38.627 38.627zm0-71.955c-18.377 0-33.328 14.951-33.328 33.327 0 18.377 14.95 33.327 33.328 33.327 18.376 0 33.326-14.95 33.326-33.327 0-18.376-14.95-33.327-33.326-33.327z" />
               <path d="M33.738 51.963a2.65 2.65 0 01-1.875-.776l-9.781-9.782a2.65 2.65 0 113.747-3.748l7.909 7.907 18.39-18.39a2.65 2.65 0 113.748 3.747L35.611 51.187a2.65 2.65 0 01-1.873.776" />
             </g>
@@ -42,14 +42,14 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
   }
 
   return (
-    <div className="admin-wrapper">
+    <div className={styles.adminWrapper}>
       {addingRobot && <Confirmation />}
-      <h3 className="title">Admin</h3>
-      <ul className="robot-card-container">
-        <li className="robot-card">
+      <h3 className={styles.title}>Admin</h3>
+      <ul className={styles.robotCardContainer}>
+        <li className={styles.robotCard}>
           <h2>Add Robot</h2>
-          <form onSubmit={onSubmit} className="add-robot-form">
-            <div className="text-input">
+          <form onSubmit={onSubmit} className={styles.addRobotForm}>
+            <div className={styles.textInput}>
               <input
                 type="text"
                 id="new-robot-name"
@@ -60,11 +60,11 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
               />
               <label htmlFor="new-robot-name">Name</label>
             </div>
-            <div className="image-upload">
-              <div className={`robot-image-preview ${robotImg ? '' : 'hidden'}`}>
+            <div className={styles.imageUpload}>
+              <div className={`${styles.robotImagePreview} ${robotImg ? '' : styles.hidden}`}>
                 <img src={robotImg} alt={robotName} />
               </div>
-              <div className={`${robotImg ? 'hidden' : ''}`}>
+              <div className={`${robotImg ? styles.hidden : ''}`}>
                 <label htmlFor="new-robot-image">
                   <svg width="21" height="21" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -77,23 +77,23 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
                 <input type="file" id="new-robot-image" required name="new-robot-image" ref={robotImgRef} onChange={handleImage} />
               </div>
             </div>
-            <div className="image-button-container">
-              <button type="button" className="clear-button" onClick={clearImage}>
+            <div className={styles.imageButtonContainer}>
+              <button type="button" className={styles.clearButton} onClick={clearImage}>
                 Clear
               </button>
-              <button type="submit" className="button-primary" disabled={!robotImg || !robotName}>
+              <button type="submit" className={styles.buttonPrimary} disabled={!robotImg || !robotName}>
                 Add Robot
               </button>
             </div>
           </form>
         </li>
         {robots.map((robot) => (
-          <RobotCard robot={robot} key={robot.id}>
-            <div className="button-container">
-              <button className="button-primary" onClick={() => alert('Sorry, the edit function is currently unavailable')}>
+          <RobotCard robot={robot} key={robot.id} parentStyles={styles}>
+            <div className={styles.buttonContainer}>
+              <button className={styles.buttonPrimary} onClick={() => alert('Sorry, the edit function is currently unavailable')}>
                 Edit
               </button>
-              <button className="button-secondary" onClick={() => removeRobot(robot.id)}>
+              <button className={styles.buttonSecondary} onClick={() => removeRobot(robot.id)}>
                 Delete
               </button>
             </div>
