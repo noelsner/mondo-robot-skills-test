@@ -79,7 +79,10 @@ function App() {
     axios
       .post(`${url}/auth/register`, { name, email, password }, authHeaders)
       .then(() => logIn(email, password))
-      .catch((error) => setRegisterError(error.response.statusText))
+      .catch((error) => {
+        setRegisterError(error.response.statusText)
+        setIsLoading(false)
+      })
   }
 
   const logOut = () => {
