@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/login.scss'
 
@@ -13,7 +13,6 @@ const Register = ({ register, registerError, setRegisterError, setIsLoading }) =
     setRegisterError('')
     register(name, email, password)
   }
-  console.log('registerError :>> ', registerError)
 
   return (
     <div className="container">
