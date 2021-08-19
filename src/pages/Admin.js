@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import RobotCard from '../components/RobotCard'
 import '../styles/admin.scss'
 
-const Admin = ({ robots, addRobot, removeRobot }) => {
+const Admin = ({ robots, addRobot, removeRobot, addingRobot }) => {
   const [robotName, setRobotName] = useState('')
   const [robotImg, setRobotImg] = useState(null)
   const robotImgRef = useRef()
@@ -25,8 +25,25 @@ const Admin = ({ robots, addRobot, removeRobot }) => {
     robotImgRef.current.value = null
   }
 
+  const Confirmation = () => {
+    return (
+      <div className="added-robot-confirmation">
+        <div>
+          Robot Added
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 78 78">
+            <g fill="currentColor" fill-rule="evenodd">
+              <path d="M38.98 77.808C17.68 77.808.35 60.48.35 39.18S17.68.551 38.98.551c21.299 0 38.627 17.33 38.627 38.63 0 21.299-17.328 38.627-38.627 38.627zm0-71.955c-18.377 0-33.328 14.951-33.328 33.327 0 18.377 14.95 33.327 33.328 33.327 18.376 0 33.326-14.95 33.326-33.327 0-18.376-14.95-33.327-33.326-33.327z" />
+              <path d="M33.738 51.963a2.65 2.65 0 01-1.875-.776l-9.781-9.782a2.65 2.65 0 113.747-3.748l7.909 7.907 18.39-18.39a2.65 2.65 0 113.748 3.747L35.611 51.187a2.65 2.65 0 01-1.873.776" />
+            </g>
+          </svg>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="admin-wrapper">
+      {addingRobot && <Confirmation />}
       <h3 className="title">Admin</h3>
       <ul className="robot-card-container">
         <li className="robot-card">
