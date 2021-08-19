@@ -1,26 +1,26 @@
 @import './variables.scss';
 
-.admin-wrapper {
+.adminWrapper {
   @extend %robot-card-wrapper;
 
-  .button-primary {
+  .buttonPrimary {
     @extend %button-primary;
     width: 100%;
   }
 
-  .button-secondary {
+  .buttonSecondary {
     @extend %button-secondary;
     width: 100%;
   }
 
-  .button-container {
+  .buttonContainer {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 16px;
   }
 
-  .add-robot-form {
+  .addRobotForm {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -28,7 +28,7 @@
     width: 100%;
     gap: 24px;
 
-    .text-input {
+    .textInput {
       display: flex;
       flex-direction: column;
       color: $gray2;
@@ -58,14 +58,14 @@
       }
     }
 
-    .text-input:focus-within {
+    .textInput:focus-within {
       color: $gray3;
     }
 
-    .image-upload {
+    .imageUpload {
       border-radius: 8px;
 
-      .robot-image-preview {
+      .robotImagePreview {
         height: 208px;
         width: 349px;
         border-radius: 8px;
@@ -118,17 +118,17 @@
       }
     }
 
-    .image-upload:focus-within {
+    .imageUpload:focus-within {
       box-shadow: $focus-shadow;
     }
 
-    .image-button-container {
+    .imageButtonContainer {
       width: 100%;
       display: flex;
       align-items: center;
       gap: 8px;
 
-      .clear-button {
+      .clearButton {
         border: none;
         background-color: transparent;
         text-decoration: underline;
@@ -141,11 +141,11 @@
         margin: 0 24px;
       }
 
-      .clear-button:hover {
+      .clearButton:hover {
         color: $gray2;
       }
 
-      .clear-button:focus {
+      .clearButton:focus {
         outline: none;
         box-shadow: $focus-shadow;
       }
@@ -156,17 +156,17 @@
     @extend %robot-card-title;
   }
 
-  .robot-card-container {
+  .robotCardContainer {
     @extend %robot-card-container;
 
-    .robot-card {
+    .robotCard {
       @extend %robot-card;
 
       h2 {
         @extend %robot-card-h2;
       }
 
-      .image-container {
+      .imageContainer {
         @extend %robot-card-image-container;
 
         img {
@@ -177,7 +177,7 @@
   }
 }
 
-.added-robot-confirmation {
+.addedRobotConfirmation {
   animation: fade ease-in-out 3.1s;
   position: fixed;
   inset: 0;
@@ -222,40 +222,40 @@
 }
 
 @media only screen and (max-width: $media-breakpoint-1) {
-  .admin-wrapper {
+  .adminWrapper {
     max-width: 825px;
   }
 }
 
 @media only screen and (max-width: $media-breakpoint-2) {
-  .admin-wrapper {
+  .adminWrapper {
     max-width: 400px;
   }
 }
 
 @media only screen and (max-width: $media-breakpoint-3) {
-  .admin-wrapper {
+  .adminWrapper {
     padding: 0;
 
     .title {
       margin-left: 32px;
     }
 
-    .robot-card-container {
+    .robotCardContainer {
       padding: 0 8px;
       grid-template-columns: repeat(auto-fit, minmax(200px, max-content));
 
-      .robot-card {
+      .robotCard {
         width: 100%;
 
-        .image-container {
+        .imageContainer {
           width: 100%;
           height: auto;
         }
 
-        .add-robot-form {
-          .image-upload {
-            .robot-image-preview {
+        .addRobotForm {
+          .imageUpload {
+            .robotImagePreview {
               width: 100%;
             }
 
@@ -264,10 +264,10 @@
             }
           }
 
-          .image-button-container {
+          .imageButtonContainer {
             gap: 0px;
 
-            .button-primary {
+            .buttonPrimary {
               padding-left: 8px;
               padding-right: 8px;
             }

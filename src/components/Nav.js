@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import '../styles/nav.scss'
+import styles from '../styles/Nav.module.scss'
 
 const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   const navMenu = useRef()
@@ -11,24 +11,24 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   const onCurrentPage = (pathName) => (location.pathname.replace('/app/', '') === pathName ? 'current' : '')
 
   const handleHamburgerClick = () => {
-    navMenu.current.classList.toggle('active')
-    hamburger.current.classList.toggle('active')
-    header.current.classList.toggle('active')
+    navMenu.current.classList.toggle(styles.active)
+    hamburger.current.classList.toggle(styles.active)
+    header.current.classList.toggle(styles.active)
   }
 
   const closeMenu = () => {
-    navMenu.current.classList.remove('active')
-    hamburger.current.classList.remove('active')
-    header.current.classList.remove('active')
+    navMenu.current.classList.remove(styles.active)
+    hamburger.current.classList.remove(styles.active)
+    header.current.classList.remove(styles.active)
   }
 
   return (
-    <header className="header" ref={header}>
-      <nav className="navbar">
-        <Link to="/app/robots" className="nav-logo">
+    <header className={styles.header} ref={header}>
+      <nav className={styles.navbar}>
+        <Link to="/app/robots" className={styles.navLogo}>
           <img src="/assets/MondoRobotLogo.png" alt="Mondo Robot Logo" />
         </Link>
-        <div className="nav-menu" ref={navMenu}>
+        <div className={styles.navMenu} ref={navMenu}>
           <ul>
             <li>
               <Link to="/app/robots" className={`${onCurrentPage('robots')}`} onClick={closeMenu}>
@@ -43,13 +43,13 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
           </ul>
           <ul>
             {isAdmin ? (
-              <li className="secondary-link">
+              <li className={styles.secondaryLink}>
                 <Link to="/app/admin" className={`${onCurrentPage('admin')}`} onClick={closeMenu}>
                   Admin
                 </Link>
               </li>
             ) : null}
-            <li className="secondary-link">
+            <li className={styles.secondaryLink}>
               <Link
                 to="/"
                 onClick={() => {
@@ -63,10 +63,10 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
             </li>
           </ul>
         </div>
-        <button className="hamburger" ref={hamburger} onClick={handleHamburgerClick}>
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+        <button className={styles.hamburger} ref={hamburger} onClick={handleHamburgerClick}>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
         </button>
       </nav>
     </header>
