@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import useLocalStorage from './hooks/useLocalStorage'
+import { url } from './constants'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -10,8 +11,6 @@ import Results from './pages/Results'
 import Nav from './components/Nav'
 import Admin from './pages/Admin'
 import Loading from './components/Loading'
-
-const url = 'https://mondo-robot-art-api.herokuapp.com'
 
 function App() {
   const [bearerToken, setBearerToken] = useLocalStorage('token', '')
@@ -23,7 +22,6 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [loggingOut, setLoggingOut] = useState(false)
-  const [addingRobot, setAddingRobot] = useState(false)
 
   const headers = useMemo(
     () => ({
@@ -33,12 +31,6 @@ function App() {
     }),
     [bearerToken]
   )
-
-  const addRobotHeaders = {
-    'Content-Type': 'multipart/form-data',
-    'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-    Authorization: `Bearer ${bearerToken}`,
-  }
 
   const authHeaders = {
     'Content-Type': 'application/json',
@@ -74,31 +66,6 @@ function App() {
       setUser(null)
       setIsAdmin(false)
       setLoggingOut(false)
-    })
-  }
-
-  const addRobotConfirmation = () => {
-    setAddingRobot(true)
-    setTimeout(() => {
-      setAddingRobot(false)
-    }, 2000)
-  }
-
-  const addRobot = (newRobot) => {
-    axios
-      .post(`${url}/robots`, newRobot, { headers: addRobotHeaders })
-      .then((response) => {
-        setRobots((prev) => [...prev, response.data])
-        addRobotConfirmation()
-        window.localStorage.removeItem('robotName')
-      })
-      .catch((error) => console.log(error))
-  }
-
-  const removeRobot = (robotId) => {
-    axios.delete(`${url}/robots/${robotId}`, { headers: headers }).then(() => {
-      setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
-      deleteVotesForRobot(robotId)
     })
   }
 
@@ -177,7 +144,7 @@ function App() {
         <Route path="/results">{user ? <Results robots={robots} votes={votes} /> : <Redirect to="/" />}</Route>
         <Route path="/admin">
           {user && isAdmin ? (
-            <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />
+            <Admin robots={robots} setRobots={setRobots} bearerToken={bearerToken} deleteVotesForRobot={deleteVotesForRobot} headers={headers} />
           ) : (
             <Redirect to="/" />
           )}
