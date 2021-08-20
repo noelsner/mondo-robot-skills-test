@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import { Route, Redirect } from 'react-router-dom'
 import useLocalStorage from './hooks/useLocalStorage'
@@ -25,36 +25,29 @@ function App() {
   const [loggingOut, setLoggingOut] = useState(false)
   const [addingRobot, setAddingRobot] = useState(false)
 
-  const headers = () => {
-    return {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    }
-  }
+  const headers = useMemo(
+    () => ({
+      'Content-Type': 'application/json',
+      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+      Authorization: `Bearer ${bearerToken}`,
+    }),
+    [bearerToken]
+  )
 
-  const addRobotHeaders = () => {
-    return {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-        Authorization: `Bearer ${bearerToken}`,
-      },
-    }
+  const addRobotHeaders = {
+    'Content-Type': 'multipart/form-data',
+    'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+    Authorization: `Bearer ${bearerToken}`,
   }
 
   const authHeaders = {
-    headers: {
-      'Content-Type': 'application/json',
-      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-    },
+    'Content-Type': 'application/json',
+    'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
   }
 
   const logIn = (email, password) => {
     axios
-      .post(`${url}/auth/session`, { email, password }, authHeaders)
+      .post(`${url}/auth/session`, { email, password }, { headers: authHeaders })
       .then((response) => {
         const token = response.data.token
         setBearerToken(token)
@@ -72,7 +65,7 @@ function App() {
 
   const exchangeTokenForAuth = () => {
     axios
-      .get(`${url}/auth/session`, headers())
+      .get(`${url}/auth/session`, { headers: headers })
       .then((response) => {
         setUser(response.data)
         setIsAdmin(response.data.email === 'admin@mondorobot.com')
@@ -86,7 +79,7 @@ function App() {
 
   const register = (name, email, password) => {
     axios
-      .post(`${url}/auth/register`, { name, email, password }, authHeaders)
+      .post(`${url}/auth/register`, { name, email, password }, { headers: authHeaders })
       .then(() => logIn(email, password))
       .catch((error) => {
         setRegisterError(error.response.statusText)
@@ -95,7 +88,7 @@ function App() {
   }
 
   const logOut = () => {
-    axios.delete(`${url}/auth/session`, headers()).then(() => {
+    axios.delete(`${url}/auth/session`, { headers: headers }).then(() => {
       setBearerToken('')
       setUser(null)
       setIsAdmin(false)
@@ -112,7 +105,7 @@ function App() {
 
   const addRobot = (newRobot) => {
     axios
-      .post(`${url}/robots`, newRobot, addRobotHeaders())
+      .post(`${url}/robots`, newRobot, { headers: addRobotHeaders })
       .then((response) => {
         setRobots((prev) => [...prev, response.data])
         addRobotConfirmation()
@@ -122,7 +115,7 @@ function App() {
   }
 
   const removeRobot = (robotId) => {
-    axios.delete(`${url}/robots/${robotId}`, headers()).then(() => {
+    axios.delete(`${url}/robots/${robotId}`, { headers: headers }).then(() => {
       setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
     })
   }
@@ -130,7 +123,7 @@ function App() {
   const addVote = (robotId) => {
     removeUserVoteIfExists()
     axios
-      .post(`${url}/votes`, { robot: robotId }, headers())
+      .post(`${url}/votes`, { robot: robotId }, { headers: headers })
       .then((response) => setVotes((prev) => [...prev, response.data]))
       .catch((error) => console.log(error.response.statusText))
   }
@@ -138,7 +131,7 @@ function App() {
   const removeUserVoteIfExists = () => {
     const userVote = votes.find((vote) => vote.user === user.id)
     if (userVote) {
-      axios.delete(`${url}/votes/${userVote.id}`, headers()).then(() => {
+      axios.delete(`${url}/votes/${userVote.id}`, { headers: headers }).then(() => {
         setVotes((prev) => prev.filter((vote) => vote.id !== userVote.id))
       })
     }
@@ -147,7 +140,7 @@ function App() {
   useEffect(() => {
     if (bearerToken) {
       axios
-        .get(`${url}/auth/session`, headers())
+        .get(`${url}/auth/session`, { headers: headers })
         .then((response) => {
           setUser(response.data)
           setIsAdmin(response.data.email === 'admin@mondorobot.com')
@@ -157,16 +150,16 @@ function App() {
     } else {
       setIsLoading(false)
     }
-  }, [bearerToken])
+  }, [bearerToken, headers])
 
   useEffect(() => {
     if (user && bearerToken) {
       // get all robots
-      axios.get(`${url}/robots`, headers()).then((response) => setRobots(response.data))
+      axios.get(`${url}/robots`, { headers: headers }).then((response) => setRobots(response.data))
       // get all votes
-      axios.get(`${url}/votes`, headers()).then((response) => setVotes(response.data))
+      axios.get(`${url}/votes`, { headers: headers }).then((response) => setVotes(response.data))
     }
-  }, [user, bearerToken])
+  }, [user, bearerToken, headers])
 
   const ProtectedPages = () => (
     <>
