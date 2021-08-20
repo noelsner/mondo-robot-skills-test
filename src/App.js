@@ -111,9 +111,12 @@ function App() {
   }
 
   const deleteVotesForRobot = (robotId) => {
-    axios.delete(`${url}/votes/${robotId}`, { headers: headers }).then(() => {
-      setVotes((prev) => prev.filter((vote) => vote.robot !== robotId))
+    votes.forEach((vote) => {
+      if (vote.robot === robotId) {
+        axios.delete(`${url}/votes/${vote.id}`, { headers: headers }).catch((err) => console.log(err))
+      }
     })
+    setVotes((prev) => prev.filter((vote) => vote.robot !== robotId))
   }
 
   const removeUserVoteIfExists = () => {
