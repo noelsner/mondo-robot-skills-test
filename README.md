@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# Robot Art
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+_This project is for the Mondo Robot Skills Assessment_
 
-## Available Scripts
+**Prompt:** The Mondo Robot People Operations Team (People Ops) loves to decorate our work space with original art, including vintage robot statues, toys and posters. People Ops is looking for a tool that allows them to create a list of potential famous robots and have the entire company vote on which of the robots is purchased next for the collection on desktop, mobile, and tablets
 
-In the project directory, you can run:
+Demo at [https://mondo-robot-skills-test.vercel.app](https://mondo-robot-skills-test.vercel.app/)
 
-### `yarn start`
+## Run Locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Clone the project
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+  git clone https://github.com/noelsner/mondo-robot-skills-test.git
+```
 
-### `yarn test`
+2. Navigate to the project directory
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+  cd mondo-robot-skills-test
+```
 
-### `yarn build`
+3. Install dependencies
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+  npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Create a `.env` file the root directory to store the API Key as an environment variable. The API Key for this project is distributed by Mondo Robot.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+touch .env
 
-### `yarn eject`
+// In .env
+REACT_APP_API_KEY=<api key goes here>
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+5. Start the server
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+  npm run start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
+\*\*Please note that the app requires an API key to properly
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Deployment
 
-## Learn More
+To deploy this project run
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+  npm run build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Tested Experience
 
-### Code Splitting
+During development this project was tested to be compatible with:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Chrome
+- Firerox
+- Safari
+- iOS
+- Android

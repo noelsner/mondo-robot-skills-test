@@ -17,6 +17,7 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   }
 
   const closeMenu = () => {
+    window.scrollTo(0, 0)
     navMenu.current.classList.remove(styles.active)
     hamburger.current.classList.remove(styles.active)
     header.current.classList.remove(styles.active)

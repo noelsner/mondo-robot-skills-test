@@ -29,37 +29,7 @@
     gap: 24px;
 
     .textInput {
-      display: flex;
-      flex-direction: column;
-      color: $gray2;
-      margin: 12px 0 58px;
-
-      label {
-        background-color: $white;
-        font-size: 18px;
-        margin: -78px 0 0 23px;
-        width: max-content;
-        padding: 0 4px;
-      }
-
-      input {
-        background: $white;
-        border: 1px solid $gray1;
-        border-radius: 8px;
-        font-size: 18px;
-        font-weight: 400;
-        padding: 20px 27px;
-      }
-
-      input:focus {
-        outline: none;
-        border: 1px solid $gray3;
-        box-shadow: $focus-shadow;
-      }
-    }
-
-    .textInput:focus-within {
-      color: $gray3;
+      @extend %text-input;
     }
 
     .imageUpload {
@@ -149,6 +119,58 @@
         outline: none;
         box-shadow: $focus-shadow;
       }
+
+      .buttonPrimary {
+        padding: 12px 32px;
+        height: 53px;
+        display: flex;
+        align-items: center;
+
+        svg {
+          fill: $white;
+          height: 25px;
+          width: 25px;
+        }
+      }
+    }
+    .ring {
+      margin-top: -5px;
+      width: 26px;
+      height: 26px;
+
+      div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 23px;
+        height: 23px;
+        margin: 3px;
+        border: 3px solid $white;
+        border-radius: 50%;
+        animation: ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: $white transparent transparent transparent;
+      }
+
+      div:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+
+      div:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+
+      div:nth-child(3) {
+        animation-delay: -0.15s;
+      }
+    }
+
+    @keyframes ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
   }
 
@@ -174,50 +196,6 @@
         }
       }
     }
-  }
-}
-
-.addedRobotConfirmation {
-  animation: fade ease-in-out 3.1s;
-  position: fixed;
-  inset: 0;
-  height: 100vh;
-  width: 100vw;
-
-  div {
-    display: inline-flex;
-    align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 36px;
-    padding: 20px 20px;
-    border-radius: 14px;
-    background-color: $gray1;
-    color: $gray3;
-    white-space: nowrap;
-
-    svg {
-      height: 36px;
-      width: 36px;
-      margin-left: 12px;
-    }
-  }
-}
-
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-  5% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
   }
 }
 
@@ -251,6 +229,7 @@
         .imageContainer {
           width: 100%;
           height: auto;
+          max-height: 349px;
         }
 
         .addRobotForm {
