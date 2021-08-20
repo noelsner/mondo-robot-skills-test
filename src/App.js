@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, useLocation } from 'react-router-dom'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -24,10 +24,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
   const [addingRobot, setAddingRobot] = useState(false)
+  const [params, setParams] = useState()
 
-  useEffect(() => {
-    exchangeTokenForAuth()
-  }, [])
+  let location = useLocation()
 
   const headers = () => {
     const token = window.localStorage.getItem('token')
@@ -101,6 +100,7 @@ function App() {
   const logOut = () => {
     axios.delete(`${url}/auth/session`, headers()).then(() => {
       window.localStorage.removeItem('token')
+      window.localStorage.removeItem('params')
       setBearerToken('')
       setLoggedIn(false)
       setUser(null)
@@ -151,14 +151,33 @@ function App() {
   }
 
   useEffect(() => {
+    axios
+      .get(`${url}/auth/session`, headers())
+      .then((response) => {
+        setUser(response.data)
+        setLoggedIn(true)
+        response.data.email === 'admin@mondorobot.com' ? setIsAdmin(true) : setIsAdmin(false)
+        setIsLoading(false)
+      })
+      .catch((error) => console.log(error))
+
+    setParams(window.localStorage.getItem('params'))
+  }, [])
+
+  useEffect(() => {
+    window.localStorage.setItem('params', location.pathname)
+  }, [location])
+
+  useEffect(() => {
     if (loggedIn) {
       axios.get(`${url}/robots`, headers()).then((response) => setRobots(response.data))
       axios.get(`${url}/votes`, headers()).then((response) => setVotes(response.data))
+      setParams(window.localStorage.getItem('params'))
     }
   }, [loggedIn, bearerToken])
 
   const ProtectedPages = () => (
-    <Router>
+    <>
       <Route path="/app">
         <Nav logOut={logOut} isAdmin={isAdmin} setLoggingOut={setLoggingOut} />
       </Route>
@@ -169,17 +188,13 @@ function App() {
         <Results robots={robots} votes={votes} />
       </Route>
       <Route path="/app/admin">
-        {isAdmin ? (
-          <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />
-        ) : (
-          <Redirect to="/app/robots" />
-        )}
+        {isAdmin && <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />}
       </Route>
-    </Router>
+    </>
   )
 
   const AuthPages = () => (
-    <Router>
+    <>
       {isLoading && <Loading />}
       <Route exact path="/">
         <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} setIsLoading={setIsLoading} />
@@ -187,17 +202,17 @@ function App() {
       <Route path="/register">
         <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
       </Route>
-    </Router>
+    </>
   )
 
   return (
-    <Router>
+    <>
       {loggingOut && <Loading loggingOut={loggingOut} />}
       <Route exact path="/">
-        {loggedIn ? <Redirect to="/app/robots" /> : <AuthPages />}
+        {loggedIn ? <Redirect to={params ? params : '/app/robots'} /> : <AuthPages />}
       </Route>
       <Route path="/app">{loggedIn ? <ProtectedPages /> : <Redirect to="/" />}</Route>
-    </Router>
+    </>
   )
 }
 

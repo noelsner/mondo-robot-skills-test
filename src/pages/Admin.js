@@ -13,7 +13,6 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
       setRobotName(storedName)
     }
   }
-  console.log('robotImg :>> ', robotImg)
 
   useEffect(() => {
     getStoredInfo()

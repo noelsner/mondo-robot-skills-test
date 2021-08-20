@@ -42,7 +42,7 @@ REACT_APP_API_KEY=<api key goes here>
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
-\*\*Please note that the app requires an API key to properly
+Please note that the app requires the API key to function properly.
 
 ## Deployment
 
