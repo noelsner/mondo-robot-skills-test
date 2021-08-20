@@ -122,6 +122,7 @@ function App() {
       .then((response) => {
         setRobots((prev) => [...prev, response.data])
         addRobotConfirmation()
+        window.localStorage.removeItem('robotName')
       })
       .catch((error) => console.log(error))
   }

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import RobotCard from '../components/RobotCard'
 import styles from '../styles/Admin.module.scss'
 
@@ -6,6 +6,18 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
   const [robotName, setRobotName] = useState('')
   const [robotImg, setRobotImg] = useState(null)
   const robotImgRef = useRef()
+
+  const getStoredInfo = () => {
+    const storedName = localStorage.getItem('robotName')
+    if (storedName) {
+      setRobotName(storedName)
+    }
+  }
+  console.log('robotImg :>> ', robotImg)
+
+  useEffect(() => {
+    getStoredInfo()
+  }, [])
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -17,13 +29,20 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
   }
 
   const handleImage = () => {
-    setRobotImg(URL.createObjectURL(robotImgRef.current.files[0]))
+    const image = URL.createObjectURL(robotImgRef.current.files[0])
+    setRobotImg(image)
+  }
+
+  const handleNameChange = (e) => {
+    setRobotName(e.target.value)
+    window.localStorage.setItem('robotName', e.target.value)
   }
 
   const clearImage = () => {
     setRobotImg(null)
     setRobotName('')
     robotImgRef.current.value = null
+    window.localStorage.removeItem('robotName')
   }
 
   const AddingRobot = () => (
@@ -50,14 +69,7 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
           <h2>Add Robot</h2>
           <form onSubmit={onSubmit} className={styles.addRobotForm}>
             <div className={styles.textInput}>
-              <input
-                type="text"
-                id="new-robot-name"
-                name="new-robot-name"
-                required
-                value={robotName}
-                onChange={(e) => setRobotName(e.target.value)}
-              />
+              <input type="text" id="new-robot-name" name="new-robot-name" required value={robotName} onChange={handleNameChange} />
               <label htmlFor="new-robot-name">Name</label>
             </div>
             <div className={styles.imageUpload}>
