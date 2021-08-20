@@ -154,7 +154,11 @@ function App() {
         <Results robots={robots} votes={votes} />
       </Route>
       <Route path="/app/admin">
-        {isAdmin && <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />}
+        {isAdmin ? (
+          <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />
+        ) : (
+          <Redirect to="/app/robots" />
+        )}
       </Route>
     </>
   )
