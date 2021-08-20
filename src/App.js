@@ -209,6 +209,7 @@ function App() {
     <>
       {loggingOut && <Loading loggingOut={loggingOut} />}
       <Route exact path="/">
+        {/* {loggedIn ? <Redirect to="/app/robots" /> : <AuthPages />} */}
         {loggedIn ? <Redirect to={params ? params : '/app/robots'} /> : <AuthPages />}
       </Route>
       <Route path="/app">{loggedIn ? <ProtectedPages /> : <Redirect to="/" />}</Route>
