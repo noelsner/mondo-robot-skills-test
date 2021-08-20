@@ -99,7 +99,7 @@ function App() {
     setAddingRobot(true)
     setTimeout(() => {
       setAddingRobot(false)
-    }, 3000)
+    }, 2000)
   }
 
   const addRobot = (newRobot) => {
@@ -162,7 +162,11 @@ function App() {
         <Results robots={robots} votes={votes} />
       </Route>
       <Route path="/app/admin">
-        {isAdmin ? <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} /> : <Redirect to="/app/robots" />}
+        {isAdmin ? (
+          <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />
+        ) : (
+          <Redirect to="/app/robots" />
+        )}
       </Route>
     </Router>
   )

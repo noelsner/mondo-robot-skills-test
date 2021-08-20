@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import styles from '../styles/Login.module.scss'
 
 const Login = ({ logIn, loginError, setLoginError, setIsLoading }) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('admin@mondorobot.com')
+  const [password, setPassword] = useState('R0bot4Lif3')
 
   const onSubmit = (e) => {
     e.preventDefault()
