@@ -32,6 +32,15 @@
       @extend %text-input;
     }
 
+    file-attachment {
+      background-color: #eceef0;
+      border-radius: 8px;
+    }
+
+    file-attachment[hover] {
+      background-color: #f8f8f8;
+    }
+
     .imageUpload {
       border-radius: 8px;
 
@@ -42,6 +51,7 @@
         overflow: hidden;
         display: flex;
         justify-content: center;
+        background-color: $white;
 
         img {
           object-fit: cover;
@@ -49,10 +59,6 @@
           height: 100%;
           width: auto;
         }
-      }
-
-      .hidden {
-        display: none;
       }
 
       label {
@@ -68,14 +74,10 @@
         cursor: pointer;
         width: 349px;
         height: 204px;
-        background: #eceef0;
+        background: inherit;
         border: 2px dashed $gray2;
         box-sizing: border-box;
         border-radius: 8px;
-      }
-
-      label:hover {
-        background-color: #f8f8f8;
       }
 
       input {
