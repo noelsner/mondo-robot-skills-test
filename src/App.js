@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, useLocation } from 'react-router-dom'
 
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -24,22 +24,31 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
   const [addingRobot, setAddingRobot] = useState(false)
+  const [params, setParams] = useState()
 
-  const headers = (token) => ({
-    headers: {
-      'Content-Type': 'application/json',
-      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  let location = useLocation()
 
-  const addRobotHeaders = (token) => ({
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  const headers = () => {
+    const token = window.localStorage.getItem('token')
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  }
+
+  const addRobotHeaders = () => {
+    const token = window.localStorage.getItem('token')
+    return {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  }
 
   const authHeaders = {
     headers: {
@@ -56,16 +65,19 @@ function App() {
         setBearerToken(token)
         return token
       })
-      .then((token) => exchangeTokenForAuth(token))
+      .then((token) => {
+        window.localStorage.setItem('token', token)
+        exchangeTokenForAuth()
+      })
       .catch((error) => {
         setLoginError(error.response.statusText)
         setIsLoading(false)
       })
   }
 
-  const exchangeTokenForAuth = (token) => {
+  const exchangeTokenForAuth = () => {
     axios
-      .get(`${url}/auth/session`, headers(token))
+      .get(`${url}/auth/session`, headers())
       .then((response) => {
         setUser(response.data)
         setLoggedIn(true)
@@ -86,7 +98,9 @@ function App() {
   }
 
   const logOut = () => {
-    axios.delete(`${url}/auth/session`, headers(bearerToken)).then(() => {
+    axios.delete(`${url}/auth/session`, headers()).then(() => {
+      window.localStorage.removeItem('token')
+      window.localStorage.removeItem('params')
       setBearerToken('')
       setLoggedIn(false)
       setUser(null)
@@ -104,16 +118,17 @@ function App() {
 
   const addRobot = (newRobot) => {
     axios
-      .post(`${url}/robots`, newRobot, addRobotHeaders(bearerToken))
+      .post(`${url}/robots`, newRobot, addRobotHeaders())
       .then((response) => {
         setRobots((prev) => [...prev, response.data])
         addRobotConfirmation()
+        window.localStorage.removeItem('robotName')
       })
       .catch((error) => console.log(error))
   }
 
   const removeRobot = (robotId) => {
-    axios.delete(`${url}/robots/${robotId}`, headers(bearerToken)).then(() => {
+    axios.delete(`${url}/robots/${robotId}`, headers()).then(() => {
       setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
     })
   }
@@ -121,7 +136,7 @@ function App() {
   const addVote = (robotId) => {
     removeUserVoteIfExists()
     axios
-      .post(`${url}/votes`, { robot: robotId }, headers(bearerToken))
+      .post(`${url}/votes`, { robot: robotId }, headers())
       .then((response) => setVotes((prev) => [...prev, response.data]))
       .catch((error) => console.log(error.response.statusText))
   }
@@ -129,29 +144,40 @@ function App() {
   const removeUserVoteIfExists = () => {
     const userVote = votes.find((vote) => vote.user === user.id)
     if (userVote) {
-      axios.delete(`${url}/votes/${userVote.id}`, headers(bearerToken)).then(() => {
+      axios.delete(`${url}/votes/${userVote.id}`, headers()).then(() => {
         setVotes((prev) => prev.filter((vote) => vote.id !== userVote.id))
       })
     }
   }
 
   useEffect(() => {
-    const getRobots = () => {
-      axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
-    }
+    axios
+      .get(`${url}/auth/session`, headers())
+      .then((response) => {
+        setUser(response.data)
+        setLoggedIn(true)
+        response.data.email === 'admin@mondorobot.com' ? setIsAdmin(true) : setIsAdmin(false)
+        setIsLoading(false)
+      })
+      .catch((error) => console.log(error))
 
-    const getVotes = () => {
-      axios.get(`${url}/votes`, headers(bearerToken)).then((response) => setVotes(response.data))
-    }
+    setParams(window.localStorage.getItem('params'))
+  }, [])
 
+  useEffect(() => {
+    window.localStorage.setItem('params', location.pathname)
+  }, [location])
+
+  useEffect(() => {
     if (loggedIn) {
-      getRobots()
-      getVotes()
+      axios.get(`${url}/robots`, headers()).then((response) => setRobots(response.data))
+      axios.get(`${url}/votes`, headers()).then((response) => setVotes(response.data))
+      setParams(window.localStorage.getItem('params'))
     }
   }, [loggedIn, bearerToken])
 
   const ProtectedPages = () => (
-    <Router>
+    <>
       <Route path="/app">
         <Nav logOut={logOut} isAdmin={isAdmin} setLoggingOut={setLoggingOut} />
       </Route>
@@ -162,17 +188,13 @@ function App() {
         <Results robots={robots} votes={votes} />
       </Route>
       <Route path="/app/admin">
-        {isAdmin ? (
-          <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />
-        ) : (
-          <Redirect to="/app/robots" />
-        )}
+        {isAdmin && <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />}
       </Route>
-    </Router>
+    </>
   )
 
   const AuthPages = () => (
-    <Router>
+    <>
       {isLoading && <Loading />}
       <Route exact path="/">
         <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} setIsLoading={setIsLoading} />
@@ -180,17 +202,18 @@ function App() {
       <Route path="/register">
         <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
       </Route>
-    </Router>
+    </>
   )
 
   return (
-    <Router>
+    <>
       {loggingOut && <Loading loggingOut={loggingOut} />}
       <Route exact path="/">
-        {loggedIn ? <Redirect to="/app/robots" /> : <AuthPages />}
+        {/* {loggedIn ? <Redirect to="/app/robots" /> : <AuthPages />} */}
+        {loggedIn ? <Redirect to={params ? params : '/app/robots'} /> : <AuthPages />}
       </Route>
       <Route path="/app">{loggedIn ? <ProtectedPages /> : <Redirect to="/" />}</Route>
-    </Router>
+    </>
   )
 }
 
