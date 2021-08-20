@@ -43,6 +43,10 @@
       background-color: $gray3;
       border-radius: 5px;
       height: 29px;
+      -webkit-transition: width 1s ease-in-out;
+      -moz-transition: width 1s ease-in-out;
+      -o-transition: width 1s ease-in-out;
+      transition: width 1s ease-in-out;
     }
   }
 }
