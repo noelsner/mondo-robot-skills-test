@@ -98,6 +98,7 @@ function App() {
   const removeRobot = (robotId) => {
     axios.delete(`${url}/robots/${robotId}`, { headers: headers }).then(() => {
       setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
+      deleteVotesForRobot(robotId)
     })
   }
 
@@ -107,6 +108,12 @@ function App() {
       .post(`${url}/votes`, { robot: robotId }, { headers: headers })
       .then((response) => setVotes((prev) => [...prev, response.data]))
       .catch((error) => console.log(error.response.statusText))
+  }
+
+  const deleteVotesForRobot = (robotId) => {
+    axios.delete(`${url}/votes/${robotId}`, { headers: headers }).then(() => {
+      setVotes((prev) => prev.filter((vote) => vote.robot !== robotId))
+    })
   }
 
   const removeUserVoteIfExists = () => {

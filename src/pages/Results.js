@@ -8,7 +8,7 @@ const Results = ({ robots, votes }) => {
       <ul className={styles.robotCardContainer}>
         {robots.map((robot) => {
           const votesForRobots = votes.filter((vote) => vote.robot === robot.id)
-          const percentage = (votesForRobots.length / votes.length) * 100 + '%'
+          const percentage = votes.length <= 0 ? 0 : (votesForRobots.length / votes.length) * 100
           return (
             <RobotCard robot={robot} key={robot.id} parentStyles={styles}>
               <div className={styles.results}>
@@ -18,7 +18,7 @@ const Results = ({ robots, votes }) => {
                   <span className={styles.totalVotes}>{votes.length}</span>
                 </div>
                 <div className={styles.progressBarContainer}>
-                  <div className={styles.progressBar} style={{ width: percentage }}></div>
+                  <div className={styles.progressBar} style={{ width: percentage + '%' }}></div>
                 </div>
               </div>
             </RobotCard>
