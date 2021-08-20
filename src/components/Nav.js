@@ -8,7 +8,7 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   const header = useRef()
 
   const location = useLocation()
-  const onCurrentPage = (pathName) => (location.pathname.replace('/app/', '') === pathName ? styles.current : '')
+  const onCurrentPage = (pathName) => (location.pathname.replace('/', '') === pathName ? styles.current : '')
 
   const handleHamburgerClick = () => {
     navMenu.current.classList.toggle(styles.active)
@@ -26,18 +26,18 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
   return (
     <header className={styles.header} ref={header}>
       <nav className={styles.navbar}>
-        <Link to="/app/robots" className={styles.navLogo}>
+        <Link to="/robots" className={styles.navLogo}>
           <img src="/assets/MondoRobotLogo.png" alt="Mondo Robot Logo" />
         </Link>
         <div className={styles.navMenu} ref={navMenu}>
           <ul>
             <li>
-              <Link to="/app/robots" className={`${onCurrentPage('robots')}`} onClick={closeMenu}>
+              <Link to="/robots" className={`${onCurrentPage('robots')}`} onClick={closeMenu}>
                 Robots
               </Link>
             </li>
             <li>
-              <Link to="/app/results" className={`${onCurrentPage('results')}`} onClick={closeMenu}>
+              <Link to="/results" className={`${onCurrentPage('results')}`} onClick={closeMenu}>
                 Results
               </Link>
             </li>
@@ -45,7 +45,7 @@ const Nav = ({ logOut, isAdmin, setLoggingOut }) => {
           <ul>
             {isAdmin ? (
               <li className={styles.secondaryLink}>
-                <Link to="/app/admin" className={`${onCurrentPage('admin')}`} onClick={closeMenu}>
+                <Link to="/admin" className={`${onCurrentPage('admin')}`} onClick={closeMenu}>
                   Admin
                 </Link>
               </li>
