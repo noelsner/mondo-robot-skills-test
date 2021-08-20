@@ -51,28 +51,9 @@ function App() {
       .then((response) => {
         const token = response.data.token
         setBearerToken(token)
-        return token
-      })
-      .then((token) => {
-        setBearerToken(token)
-        exchangeTokenForAuth()
       })
       .catch((error) => {
         setLoginError(error.response.statusText)
-        setIsLoading(false)
-      })
-  }
-
-  const exchangeTokenForAuth = () => {
-    axios
-      .get(`${url}/auth/session`, { headers: headers })
-      .then((response) => {
-        setUser(response.data)
-        setIsAdmin(response.data.email === 'admin@mondorobot.com')
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        console.log(error)
         setIsLoading(false)
       })
   }
