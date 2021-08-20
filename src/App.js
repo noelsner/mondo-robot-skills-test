@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect, Switch } from 'react-router-dom'
 import useLocalStorage from './hooks/useLocalStorage'
 
 import Login from './pages/Login'
@@ -51,28 +51,9 @@ function App() {
       .then((response) => {
         const token = response.data.token
         setBearerToken(token)
-        return token
-      })
-      .then((token) => {
-        setBearerToken(token)
-        exchangeTokenForAuth()
       })
       .catch((error) => {
         setLoginError(error.response.statusText)
-        setIsLoading(false)
-      })
-  }
-
-  const exchangeTokenForAuth = () => {
-    axios
-      .get(`${url}/auth/session`, { headers: headers })
-      .then((response) => {
-        setUser(response.data)
-        setIsAdmin(response.data.email === 'admin@mondorobot.com')
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        console.log(error)
         setIsLoading(false)
       })
   }
@@ -156,49 +137,42 @@ function App() {
     if (user && bearerToken) {
       // get all robots
       axios.get(`${url}/robots`, { headers: headers }).then((response) => setRobots(response.data))
+
       // get all votes
       axios.get(`${url}/votes`, { headers: headers }).then((response) => setVotes(response.data))
     }
   }, [user, bearerToken, headers])
 
-  const ProtectedPages = () => (
-    <>
-      <Route path="/app">
-        <Nav logOut={logOut} isAdmin={isAdmin} setLoggingOut={setLoggingOut} />
-      </Route>
-      <Route path="/app/robots">
-        <Robots robots={robots} addVote={addVote} votes={votes} user={user} />
-      </Route>
-      <Route path="/app/results">
-        <Results robots={robots} votes={votes} />
-      </Route>
-      <Route path="/app/admin">
-        {isAdmin && <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />}
-      </Route>
-    </>
-  )
-
-  const AuthPages = () => (
-    <>
-      {isLoading && <Loading />}
-      <Route exact path="/">
-        <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} setIsLoading={setIsLoading} />
-      </Route>
-      <Route path="/register">
-        <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
-      </Route>
-    </>
-  )
-
   if (isLoading) return <Loading />
+  if (loggingOut) return <Loading loggingOut={loggingOut} />
 
   return (
     <>
-      {loggingOut && <Loading loggingOut={loggingOut} />}
-      <Route exact path="/">
-        {user ? <Redirect to="/app/robots" /> : <AuthPages />}
-      </Route>
-      <Route path="/app">{user ? <ProtectedPages /> : <Redirect to="/" />}</Route>
+      {user && <Nav logOut={logOut} isAdmin={isAdmin} setLoggingOut={setLoggingOut} />}
+      <Switch>
+        <Route exact path="/">
+          {user ? <Redirect to="/robots" /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/login">
+          {user ? (
+            <Redirect to="/robots" />
+          ) : (
+            <Login logIn={logIn} loginError={loginError} setLoginError={setLoginError} setIsLoading={setIsLoading} />
+          )}
+        </Route>
+        <Route path="/register">
+          <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
+        </Route>
+        <Route path="/robots">{user ? <Robots robots={robots} addVote={addVote} votes={votes} user={user} /> : <Redirect to="/" />}</Route>
+        <Route path="/results">{user ? <Results robots={robots} votes={votes} /> : <Redirect to="/" />}</Route>
+        <Route path="/admin">
+          {user && isAdmin ? (
+            <Admin robots={robots} addRobot={addRobot} removeRobot={removeRobot} addingRobot={addingRobot} setAddingRobot={setAddingRobot} />
+          ) : (
+            <Redirect to="/" />
+          )}
+        </Route>
+      </Switch>
     </>
   )
 }
