@@ -1,14 +1,25 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import RobotCard from '../components/RobotCard'
 import styles from '../styles/Admin.module.scss'
 import { url } from '../constants'
 import axios from 'axios'
+import '@github/file-attachment-element'
 
 const Admin = ({ robots, setRobots, bearerToken, deleteVotesForRobot, headers }) => {
   const [robotName, setRobotName] = useState('')
   const [robotImg, setRobotImg] = useState(null)
   const [addingRobot, setAddingRobot] = useState(false)
-  const robotImgRef = useRef()
+
+  useEffect(() => {
+    document.addEventListener('file-attachment-accepted', function (event) {
+      setRobotImg(event.detail.attachments[0].file)
+    })
+    return () => {
+      document.removeEventListener('file-attachment-accepted', function (event) {
+        setRobotImg(event.detail.attachments[0].file)
+      })
+    }
+  }, [])
 
   const addRobotHeaders = {
     'Content-Type': 'multipart/form-data',
@@ -46,13 +57,8 @@ const Admin = ({ robots, setRobots, bearerToken, deleteVotesForRobot, headers })
     setAddingRobot('adding')
     const formData = new FormData()
     formData.append('name', robotName)
-    formData.append('image', robotImgRef.current.files[0])
+    formData.append('image', robotImg)
     addRobot(formData)
-  }
-
-  const handleImage = () => {
-    const image = URL.createObjectURL(robotImgRef.current.files[0])
-    setRobotImg(image)
   }
 
   const handleNameChange = (e) => {
@@ -62,7 +68,6 @@ const Admin = ({ robots, setRobots, bearerToken, deleteVotesForRobot, headers })
   const clearForm = () => {
     setRobotImg(null)
     setRobotName('')
-    robotImgRef.current.value = null
   }
 
   const AddingRobot = () => (
@@ -92,23 +97,28 @@ const Admin = ({ robots, setRobots, bearerToken, deleteVotesForRobot, headers })
               <input type="text" id="new-robot-name" name="new-robot-name" required value={robotName} onChange={handleNameChange} />
               <label htmlFor="new-robot-name">Name</label>
             </div>
-            <div className={styles.imageUpload}>
-              <div className={`${styles.robotImagePreview} ${robotImg ? '' : styles.hidden}`}>
-                <img src={robotImg} alt={robotName} />
+            <file-attachment input="new-robot-image" directory>
+              <div className={styles.imageUpload}>
+                {robotImg ? (
+                  <div className={styles.robotImagePreview}>
+                    <img src={robotImg ? URL.createObjectURL(robotImg) : ''} alt={robotName} />
+                  </div>
+                ) : (
+                  <div>
+                    <label htmlFor="new-robot-image">
+                      <svg width="21" height="21" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M18.9999 14.9999V18.9999H2.99992V14.9999H0.333252V18.9999C0.333252 20.4666 1.53325 21.6666 2.99992 21.6666H18.9999C20.4666 21.6666 21.6666 20.4666 21.6666 18.9999V14.9999H18.9999ZM4.33325 6.99992L6.21325 8.87992L9.66658 5.43992V16.3333H12.3333V5.43992L15.7866 8.87992L17.6666 6.99992L10.9999 0.333252L4.33325 6.99992Z"
+                          fill="#414242"
+                        />
+                      </svg>
+                      Select Image to Upload
+                    </label>
+                    <input type="file" id="new-robot-image" required name="new-robot-image" />
+                  </div>
+                )}
               </div>
-              <div className={`${robotImg ? styles.hidden : ''}`}>
-                <label htmlFor="new-robot-image">
-                  <svg width="21" height="21" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M18.9999 14.9999V18.9999H2.99992V14.9999H0.333252V18.9999C0.333252 20.4666 1.53325 21.6666 2.99992 21.6666H18.9999C20.4666 21.6666 21.6666 20.4666 21.6666 18.9999V14.9999H18.9999ZM4.33325 6.99992L6.21325 8.87992L9.66658 5.43992V16.3333H12.3333V5.43992L15.7866 8.87992L17.6666 6.99992L10.9999 0.333252L4.33325 6.99992Z"
-                      fill="#414242"
-                    />
-                  </svg>
-                  Select Image to Upload
-                </label>
-                <input type="file" id="new-robot-image" required name="new-robot-image" ref={robotImgRef} onChange={handleImage} />
-              </div>
-            </div>
+            </file-attachment>
             <div className={styles.imageButtonContainer}>
               <button type="button" className={styles.clearButton} onClick={clearForm}>
                 Clear
