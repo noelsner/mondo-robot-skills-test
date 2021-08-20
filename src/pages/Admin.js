@@ -1,12 +1,45 @@
 import { useState, useRef } from 'react'
 import RobotCard from '../components/RobotCard'
 import styles from '../styles/Admin.module.scss'
-import useLocalStorage from '../hooks/useLocalStorage'
+import { url } from '../constants'
+import axios from 'axios'
 
-const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) => {
-  const [robotName, setRobotName] = useLocalStorage('')
+const Admin = ({ robots, setRobots, bearerToken, deleteVotesForRobot, headers }) => {
+  const [robotName, setRobotName] = useState('')
   const [robotImg, setRobotImg] = useState(null)
+  const [addingRobot, setAddingRobot] = useState(false)
   const robotImgRef = useRef()
+
+  const addRobotHeaders = {
+    'Content-Type': 'multipart/form-data',
+    'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+    Authorization: `Bearer ${bearerToken}`,
+  }
+
+  const addRobotConfirmation = () => {
+    setAddingRobot(true)
+    setTimeout(() => {
+      setAddingRobot(false)
+    }, 2000)
+  }
+
+  const addRobot = (newRobot) => {
+    axios
+      .post(`${url}/robots`, newRobot, { headers: addRobotHeaders })
+      .then((response) => {
+        setRobots((prev) => [response.data, ...prev])
+        addRobotConfirmation()
+        clearForm()
+      })
+      .catch((error) => console.log(error))
+  }
+
+  const removeRobot = (robotId) => {
+    axios.delete(`${url}/robots/${robotId}`, { headers: headers }).then(() => {
+      setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
+      deleteVotesForRobot(robotId)
+    })
+  }
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -26,7 +59,7 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
     setRobotName(e.target.value)
   }
 
-  const clearImage = () => {
+  const clearForm = () => {
     setRobotImg(null)
     setRobotName('')
     robotImgRef.current.value = null
@@ -77,7 +110,7 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
               </div>
             </div>
             <div className={styles.imageButtonContainer}>
-              <button type="button" className={styles.clearButton} onClick={clearImage}>
+              <button type="button" className={styles.clearButton} onClick={clearForm}>
                 Clear
               </button>
               <button type="submit" className={styles.buttonPrimary} disabled={!addingRobot && (!robotImg || !robotName)}>
