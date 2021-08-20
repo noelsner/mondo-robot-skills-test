@@ -144,6 +144,7 @@ function App() {
   }, [user, bearerToken, headers])
 
   if (isLoading) return <Loading />
+  if (loggingOut) return <Loading loggingOut={loggingOut} />
 
   return (
     <>
