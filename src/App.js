@@ -138,7 +138,11 @@ function App() {
           )}
         </Route>
         <Route path="/register">
-          <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
+          {user ? (
+            <Redirect to="/robots" />
+          ) : (
+            <Register register={register} registerError={registerError} setRegisterError={setRegisterError} setIsLoading={setIsLoading} />
+          )}
         </Route>
         <Route path="/robots">{user ? <Robots robots={robots} addVote={addVote} votes={votes} user={user} /> : <Redirect to="/" />}</Route>
         <Route path="/results">{user ? <Results robots={robots} votes={votes} /> : <Redirect to="/" />}</Route>
