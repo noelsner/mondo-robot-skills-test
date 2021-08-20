@@ -60,4 +60,3 @@ During development this project was tested to be compatible with:
 - Firerox
 - Safari
 - iOS
-- Android

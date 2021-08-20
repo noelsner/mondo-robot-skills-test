@@ -25,21 +25,31 @@ function App() {
   const [loggingOut, setLoggingOut] = useState(false)
   const [addingRobot, setAddingRobot] = useState(false)
 
-  const headers = (token) => ({
-    headers: {
-      'Content-Type': 'application/json',
-      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  useEffect(() => {
+    exchangeTokenForAuth()
+  }, [])
 
-  const addRobotHeaders = (token) => ({
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  const headers = () => {
+    const token = window.localStorage.getItem('token')
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  }
+
+  const addRobotHeaders = () => {
+    const token = window.localStorage.getItem('token')
+    return {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'x-robot-art-api-key': process.env.REACT_APP_API_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  }
 
   const authHeaders = {
     headers: {
@@ -56,16 +66,19 @@ function App() {
         setBearerToken(token)
         return token
       })
-      .then((token) => exchangeTokenForAuth(token))
+      .then((token) => {
+        window.localStorage.setItem('token', token)
+        exchangeTokenForAuth()
+      })
       .catch((error) => {
         setLoginError(error.response.statusText)
         setIsLoading(false)
       })
   }
 
-  const exchangeTokenForAuth = (token) => {
+  const exchangeTokenForAuth = () => {
     axios
-      .get(`${url}/auth/session`, headers(token))
+      .get(`${url}/auth/session`, headers())
       .then((response) => {
         setUser(response.data)
         setLoggedIn(true)
@@ -86,7 +99,8 @@ function App() {
   }
 
   const logOut = () => {
-    axios.delete(`${url}/auth/session`, headers(bearerToken)).then(() => {
+    axios.delete(`${url}/auth/session`, headers()).then(() => {
+      window.localStorage.removeItem('token')
       setBearerToken('')
       setLoggedIn(false)
       setUser(null)
@@ -104,7 +118,7 @@ function App() {
 
   const addRobot = (newRobot) => {
     axios
-      .post(`${url}/robots`, newRobot, addRobotHeaders(bearerToken))
+      .post(`${url}/robots`, newRobot, addRobotHeaders())
       .then((response) => {
         setRobots((prev) => [...prev, response.data])
         addRobotConfirmation()
@@ -113,7 +127,7 @@ function App() {
   }
 
   const removeRobot = (robotId) => {
-    axios.delete(`${url}/robots/${robotId}`, headers(bearerToken)).then(() => {
+    axios.delete(`${url}/robots/${robotId}`, headers()).then(() => {
       setRobots((prev) => prev.filter((robot) => robot.id !== robotId))
     })
   }
@@ -121,7 +135,7 @@ function App() {
   const addVote = (robotId) => {
     removeUserVoteIfExists()
     axios
-      .post(`${url}/votes`, { robot: robotId }, headers(bearerToken))
+      .post(`${url}/votes`, { robot: robotId }, headers())
       .then((response) => setVotes((prev) => [...prev, response.data]))
       .catch((error) => console.log(error.response.statusText))
   }
@@ -129,24 +143,16 @@ function App() {
   const removeUserVoteIfExists = () => {
     const userVote = votes.find((vote) => vote.user === user.id)
     if (userVote) {
-      axios.delete(`${url}/votes/${userVote.id}`, headers(bearerToken)).then(() => {
+      axios.delete(`${url}/votes/${userVote.id}`, headers()).then(() => {
         setVotes((prev) => prev.filter((vote) => vote.id !== userVote.id))
       })
     }
   }
 
   useEffect(() => {
-    const getRobots = () => {
-      axios.get(`${url}/robots`, headers(bearerToken)).then((response) => setRobots(response.data))
-    }
-
-    const getVotes = () => {
-      axios.get(`${url}/votes`, headers(bearerToken)).then((response) => setVotes(response.data))
-    }
-
     if (loggedIn) {
-      getRobots()
-      getVotes()
+      axios.get(`${url}/robots`, headers()).then((response) => setRobots(response.data))
+      axios.get(`${url}/votes`, headers()).then((response) => setVotes(response.data))
     }
   }, [loggedIn, bearerToken])
 
