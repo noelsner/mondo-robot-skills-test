@@ -1,22 +1,12 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import RobotCard from '../components/RobotCard'
 import styles from '../styles/Admin.module.scss'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) => {
-  const [robotName, setRobotName] = useState('')
+  const [robotName, setRobotName] = useLocalStorage('')
   const [robotImg, setRobotImg] = useState(null)
   const robotImgRef = useRef()
-
-  const getStoredInfo = () => {
-    const storedName = localStorage.getItem('robotName')
-    if (storedName) {
-      setRobotName(storedName)
-    }
-  }
-
-  useEffect(() => {
-    getStoredInfo()
-  }, [])
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -34,14 +24,12 @@ const Admin = ({ robots, addRobot, removeRobot, addingRobot, setAddingRobot }) =
 
   const handleNameChange = (e) => {
     setRobotName(e.target.value)
-    window.localStorage.setItem('robotName', e.target.value)
   }
 
   const clearImage = () => {
     setRobotImg(null)
     setRobotName('')
     robotImgRef.current.value = null
-    window.localStorage.removeItem('robotName')
   }
 
   const AddingRobot = () => (
