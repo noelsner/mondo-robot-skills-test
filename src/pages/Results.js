@@ -1,5 +1,6 @@
-import styles from '../styles/Results.module.scss'
 import RobotCard from '../components/RobotCard'
+import { CSSTransitionGroup } from 'react-transition-group'
+import styles from '../styles/Results.module.scss'
 
 const Results = ({ robots, votes }) => {
   return (
@@ -18,7 +19,18 @@ const Results = ({ robots, votes }) => {
                   <span className={styles.totalVotes}>{votes.length}</span>
                 </div>
                 <div className={styles.progressBarContainer}>
-                  <div className={styles.progressBar} style={{ width: percentage + '%' }}></div>
+                  <CSSTransitionGroup
+                    transitionName={{
+                      appear: styles.progressAppear,
+                      appearActive: styles.progressAppearActive,
+                    }}
+                    transitionAppear={true}
+                    transitionAppearTimeout={1000}
+                    transitionEnter={false}
+                    transitionLeave={false}
+                  >
+                    <div className={styles.progressBar} style={{ width: percentage + '%' }}></div>
+                  </CSSTransitionGroup>
                 </div>
               </div>
             </RobotCard>

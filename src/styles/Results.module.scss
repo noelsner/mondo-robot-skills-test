@@ -39,10 +39,15 @@
     border-radius: 8px;
     padding: 2px;
 
-    .progressBar {
+    .progressAppear {
       background-color: $gray3;
       border-radius: 5px;
       height: 29px;
+      width: 0;
+    }
+
+    .progressAppearActive {
+      width: 100%;
       -webkit-transition: width 1s ease-in-out;
       -moz-transition: width 1s ease-in-out;
       -o-transition: width 1s ease-in-out;
